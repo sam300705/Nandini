@@ -13,19 +13,28 @@ type Entry = {
   text: string;
   deletedAt?: string | null;
 };
+type DiaryRow = {
+  id: string;
+  title: string;
+  content: string;
+  created_at: string;
+  deleted_at: string | null;
+};
 const moods = ["😊", "🥰", "😎", "😴", "😤", "🥺"];
 const today = () => {
   const d = new Date();
   return `${d.getFullYear()}-${String(d.getMonth() + 1).padStart(2, "0")}-${String(d.getDate()).padStart(2, "0")}`;
 };
-function rowToEntry(row: any): Entry {
+function rowToEntry(row: DiaryRow): Entry {
   let entryDate = row.created_at.slice(0, 10),
     mood = "😊";
   try {
     const m = JSON.parse(row.title);
     if (typeof m?.date === "string") entryDate = m.date;
     if (moods.includes(m?.mood)) mood = m.mood;
-  } catch {}
+  } catch {
+    // Older entries can have a non-JSON title; keep the default mood and date.
+  }
   return {
     id: row.id,
     date: row.created_at,
