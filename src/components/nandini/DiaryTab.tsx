@@ -118,18 +118,16 @@ export default function DiaryTab() {
     if (!uid || !draftReady || editingId) return;
     const timer = window.setTimeout(async () => {
       if (text.trim())
-        await supabase
-          .from("diary_drafts")
-          .upsert(
-            {
-              user_id: uid,
-              entry_date: entryDate,
-              mood,
-              content: text,
-              updated_at: new Date().toISOString(),
-            },
-            { onConflict: "user_id" },
-          );
+        await supabase.from("diary_drafts").upsert(
+          {
+            user_id: uid,
+            entry_date: entryDate,
+            mood,
+            content: text,
+            updated_at: new Date().toISOString(),
+          },
+          { onConflict: "user_id" },
+        );
       else await supabase.from("diary_drafts").delete().eq("user_id", uid);
     }, 650);
     return () => window.clearTimeout(timer);
@@ -195,16 +193,14 @@ export default function DiaryTab() {
     } else {
       const id = crypto.randomUUID(),
         createdAt = new Date().toISOString();
-      const { error: e } = await supabase
-        .from("diary_entries")
-        .insert({
-          id,
-          user_id: uid,
-          title,
-          content: clean,
-          created_at: createdAt,
-          updated_at: createdAt,
-        });
+      const { error: e } = await supabase.from("diary_entries").insert({
+        id,
+        user_id: uid,
+        title,
+        content: clean,
+        created_at: createdAt,
+        updated_at: createdAt,
+      });
       if (e) setError(e.message);
       else {
         setEntries((cur) => [{ id, date: createdAt, entryDate, mood, text: clean }, ...cur]);
