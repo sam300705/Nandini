@@ -1,0 +1,274 @@
+@import "tailwindcss" source(none);
+@source "../src";
+@import "tw-animate-css";
+
+@custom-variant dark (&:is(.dark *));
+
+/*
+ * Design system definition.
+ *
+ * The @theme inline block maps CSS custom properties to Tailwind utility
+ * classes (e.g. --color-primary -> bg-primary, text-primary).
+ *
+ * The :root and .dark blocks define the actual color values using oklch.
+ * All colors MUST use oklch format.
+ *
+ * To add a new semantic color:
+ * 1. Add the variable to :root (light value) and .dark (dark value)
+ * 2. Register it in @theme inline as --color-<name>: var(--<name>)
+ */
+
+@theme inline {
+  --radius-sm: calc(var(--radius) - 4px);
+  --radius-md: calc(var(--radius) - 2px);
+  --radius-lg: var(--radius);
+  --radius-xl: calc(var(--radius) + 4px);
+  --radius-2xl: calc(var(--radius) + 8px);
+  --radius-3xl: calc(var(--radius) + 12px);
+  --radius-4xl: calc(var(--radius) + 16px);
+  --color-background: var(--background);
+  --color-foreground: var(--foreground);
+  --color-card: var(--card);
+  --color-card-foreground: var(--card-foreground);
+  --color-popover: var(--popover);
+  --color-popover-foreground: var(--popover-foreground);
+  --color-primary: var(--primary);
+  --color-primary-foreground: var(--primary-foreground);
+  --color-secondary: var(--secondary);
+  --color-secondary-foreground: var(--secondary-foreground);
+  --color-muted: var(--muted);
+  --color-muted-foreground: var(--muted-foreground);
+  --color-accent: var(--accent);
+  --color-accent-foreground: var(--accent-foreground);
+  --color-destructive: var(--destructive);
+  --color-destructive-foreground: var(--destructive-foreground);
+  --color-border: var(--border);
+  --color-input: var(--input);
+  --color-ring: var(--ring);
+  --color-ring-offset-background: var(--background);
+  --color-chart-1: var(--chart-1);
+  --color-primary-glow: var(--primary-glow);
+  --font-sans: "Outfit", ui-sans-serif, system-ui, sans-serif;
+  --font-script: "Dancing Script", cursive;
+  --color-chart-2: var(--chart-2);
+  --color-chart-3: var(--chart-3);
+  --color-chart-4: var(--chart-4);
+  --color-chart-5: var(--chart-5);
+  --color-sidebar: var(--sidebar);
+  --color-sidebar-foreground: var(--sidebar-foreground);
+  --color-sidebar-primary: var(--sidebar-primary);
+  --color-sidebar-primary-foreground: var(--sidebar-primary-foreground);
+  --color-sidebar-accent: var(--sidebar-accent);
+  --color-sidebar-accent-foreground: var(--sidebar-accent-foreground);
+  --color-sidebar-border: var(--sidebar-border);
+  --color-sidebar-ring: var(--sidebar-ring);
+}
+
+:root {
+  --radius: 1rem;
+  --background: oklch(0.985 0.012 355);
+  --foreground: oklch(0.27 0.06 355);
+  --card: oklch(0.975 0.02 355);
+  --card-foreground: oklch(0.27 0.06 355);
+  --popover: oklch(1 0 0);
+  --popover-foreground: oklch(0.27 0.06 355);
+  --primary: oklch(0.62 0.24 356);
+  --primary-glow: oklch(0.74 0.17 350);
+  --primary-foreground: oklch(1 0 0);
+  --secondary: oklch(0.95 0.025 355);
+  --secondary-foreground: oklch(0.5 0.2 356);
+  --muted: oklch(0.95 0.015 355);
+  --muted-foreground: oklch(0.52 0.05 355);
+  --accent: oklch(0.93 0.04 355);
+  --accent-foreground: oklch(0.5 0.2 356);
+  --destructive: oklch(0.6 0.22 25);
+  --destructive-foreground: oklch(1 0 0);
+  --border: oklch(0.9 0.03 355);
+  --input: oklch(0.9 0.03 355);
+  --ring: oklch(0.62 0.24 356);
+  --chart-1: oklch(0.62 0.24 356);
+  --chart-2: oklch(0.74 0.17 350);
+  --chart-3: oklch(0.7 0.15 310);
+  --chart-4: oklch(0.8 0.15 70);
+  --chart-5: oklch(0.7 0.18 30);
+  --sidebar: oklch(0.975 0.02 355);
+  --sidebar-foreground: oklch(0.27 0.06 355);
+  --sidebar-primary: oklch(0.62 0.24 356);
+  --sidebar-primary-foreground: oklch(1 0 0);
+  --sidebar-accent: oklch(0.93 0.04 355);
+  --sidebar-accent-foreground: oklch(0.5 0.2 356);
+  --sidebar-border: oklch(0.9 0.03 355);
+  --sidebar-ring: oklch(0.62 0.24 356);
+  --gradient-primary: linear-gradient(135deg, oklch(0.6 0.25 356), oklch(0.66 0.22 352), oklch(0.76 0.15 350));
+  --gradient-text: linear-gradient(120deg, oklch(0.55 0.22 356), oklch(0.62 0.24 356), oklch(0.76 0.15 350));
+  --gradient-page: radial-gradient(60% 50% at 15% 0%, oklch(0.9 0.08 355 / 0.85), transparent 70%), radial-gradient(55% 45% at 90% 10%, oklch(0.92 0.06 310 / 0.7), transparent 70%), radial-gradient(70% 60% at 50% 100%, oklch(0.95 0.04 50 / 0.8), transparent 70%), linear-gradient(160deg, oklch(0.98 0.015 10), oklch(0.98 0.015 350), oklch(0.95 0.035 350));
+  --shadow-glow: 0 18px 50px -22px oklch(0.62 0.24 356 / 0.45), inset 0 1px 0 oklch(1 0 0 / 0.7);
+}
+
+@layer base {
+  * {
+    border-color: var(--color-border);
+  }
+
+  body {
+    background-color: var(--color-background);
+    color: var(--color-foreground);
+  }
+}
+
+@utility glass-pink {
+  background: linear-gradient(140deg, oklch(1 0 0 / 0.72), oklch(0.62 0.24 356 / 0.07));
+  backdrop-filter: blur(10px) saturate(1.15);
+  border: 1px solid oklch(1 0 0 / 0.6);
+  box-shadow: 0 12px 40px -18px oklch(0.5 0.2 356 / 0.28), inset 0 1px 0 oklch(1 0 0 / 0.7);
+}
+@utility gradient-pink { background: var(--gradient-page); }
+@utility gradient-primary { background: var(--gradient-primary); color: var(--primary-foreground); }
+@utility text-gradient { background: var(--gradient-text); -webkit-background-clip: text; background-clip: text; -webkit-text-fill-color: transparent; }
+@utility glow-primary { box-shadow: var(--shadow-glow); }
+@utility no-scrollbar { scrollbar-width: none; &::-webkit-scrollbar { display: none; } }
+@keyframes float-up { 0% { transform: translateY(0) scale(1); opacity: 0.9 } 100% { transform: translateY(-110vh) scale(1.4); opacity: 0 } }
+
+
+/* Keep long private feeds cheap to scroll on mobile. */
+.gallery-card, .diary-card { content-visibility: auto; contain-intrinsic-size: 260px; contain: layout paint style; }
+@media (max-width: 640px) {
+  .glass-pink { backdrop-filter: none; background: oklch(1 0 0 / 0.82); box-shadow: 0 8px 24px -18px oklch(0.5 0.2 356 / 0.22); }
+}
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after { scroll-behavior: auto !important; animation-duration: 0.01ms !important; animation-iteration-count: 1 !important; transition-duration: 0.01ms !important; }
+}
+
+
+/* Mobile PWA install prompt */
+.install-app-prompt {
+  position: fixed;
+  z-index: 120;
+  left: 50%;
+  bottom: max(14px, env(safe-area-inset-bottom));
+  width: min(360px, calc(100vw - 24px));
+  transform: translateX(-50%);
+  padding: 14px;
+  border: 1px solid oklch(0.9 0.03 355);
+  border-radius: 22px;
+  background: oklch(0.99 0.012 355 / 0.98);
+  box-shadow:
+    0 24px 60px -28px oklch(0.43 0.17 355 / 0.42),
+    inset 0 1px 0 oklch(1 0 0 / 0.85);
+  backdrop-filter: blur(14px);
+}
+
+.install-app-main {
+  display: flex;
+  align-items: center;
+  gap: 11px;
+  padding-right: 28px;
+}
+
+.install-app-icon {
+  width: 48px;
+  height: 48px;
+  flex: 0 0 auto;
+  border-radius: 14px;
+  box-shadow: 0 8px 22px -14px oklch(0.5 0.2 356 / 0.42);
+}
+
+.install-app-copy {
+  min-width: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+
+.install-app-copy strong {
+  color: var(--foreground);
+  font-size: 15px;
+  font-weight: 700;
+  letter-spacing: -0.01em;
+}
+
+.install-app-copy span {
+  color: var(--muted-foreground);
+  font-size: 12px;
+  line-height: 1.35;
+}
+
+.install-app-dismiss {
+  position: absolute;
+  top: 10px;
+  right: 10px;
+  display: grid;
+  width: 30px;
+  height: 30px;
+  place-items: center;
+  border: 0;
+  border-radius: 999px;
+  background: transparent;
+  color: var(--muted-foreground);
+}
+
+.install-app-dismiss:focus-visible,
+.install-app-action:focus-visible {
+  outline: 2px solid var(--ring);
+  outline-offset: 2px;
+}
+
+.install-app-action {
+  margin-top: 12px;
+  width: 100%;
+  min-height: 44px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 7px;
+  border: 0;
+  border-radius: 14px;
+  background: var(--gradient-primary);
+  color: white;
+  font: inherit;
+  font-size: 14px;
+  font-weight: 700;
+  box-shadow: 0 10px 24px -16px oklch(0.5 0.2 356 / 0.55);
+}
+
+.install-app-steps {
+  margin-top: 11px;
+  display: flex;
+  align-items: flex-start;
+  gap: 8px;
+  padding: 9px 10px;
+  border-radius: 12px;
+  background: oklch(0.96 0.025 355);
+  color: var(--foreground);
+  font-size: 12px;
+  line-height: 1.4;
+}
+
+.install-app-steps svg {
+  margin-top: 1px;
+  flex: 0 0 auto;
+  color: var(--primary);
+}
+
+@media (min-width: 821px) and (pointer: fine) {
+  .install-app-prompt {
+    display: none;
+  }
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  .install-app-prompt {
+    animation: installPromptIn 280ms cubic-bezier(0.2, 0.8, 0.2, 1);
+  }
+}
+
+@keyframes installPromptIn {
+  from {
+    opacity: 0;
+    transform: translate(-50%, 14px) scale(0.98);
+  }
+  to {
+    opacity: 1;
+    transform: translate(-50%, 0) scale(1);
+  }
+}

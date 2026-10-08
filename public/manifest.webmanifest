@@ -1,0 +1,24 @@
+{
+  "id": "/",
+  "name": "Hey Nandini ♡",
+  "short_name": "Nandini ♡",
+  "description": "Nandini's private little universe.",
+  "start_url": "/",
+  "scope": "/",
+  "display": "standalone",
+  "display_override": [
+    "standalone"
+  ],
+  "orientation": "portrait-primary",
+  "background_color": "#fff1f6",
+  "theme_color": "#fff1f6",
+  "icons": [
+    {
+      "src": "/app-icon.svg",
+      "sizes": "any",
+      "type": "image/svg+xml",
+      "purpose": "any maskable"
+    }
+  ],
+  "prefer_related_applications": false
+}

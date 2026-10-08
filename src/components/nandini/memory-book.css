@@ -1,0 +1,141 @@
+.memory-book {
+  padding: 20px 12px 12px;
+  overflow: hidden;
+  background: #fff1f6;
+  border: 1px solid #e8a6c480;
+}
+.memory-intro {
+  text-align: center;
+  font-size: 12px;
+  color: #7d4760;
+  margin: 6px 0 18px;
+}
+.memory-reader:focus-visible,
+.memory-tap:focus-visible,
+.memory-controls button:focus-visible {
+  outline: 2px solid #a8376a;
+  outline-offset: 3px;
+}
+.memory-reader {
+  min-width: 0;
+}
+.memory-stage {
+  position: relative;
+  width: min(100%, 360px);
+  aspect-ratio: 1 / 2;
+  margin: 0 auto;
+  perspective: 1600px;
+  perspective-origin: 45% 50%;
+  isolation: isolate;
+  touch-action: pan-y pinch-zoom;
+}
+.memory-page {
+  width: 100%;
+  height: 100%;
+  display: block;
+  object-fit: contain;
+  box-shadow: 2px 8px 22px #5e294538;
+  border-radius: 3px;
+}
+.memory-paper {
+  position: absolute;
+  inset: 0;
+  background: #f9edf1;
+  border: 1px solid #e3ced6;
+  box-shadow: 0 8px 28px #5e294533;
+}
+.memory-under {
+  transform: translate(3px, 3px) rotate(0.5deg);
+  z-index: -1;
+}
+.memory-turning {
+  position: absolute;
+  inset: 0;
+  transform-style: preserve-3d;
+  z-index: 2;
+}
+.memory-front,
+.memory-back {
+  position: absolute;
+  inset: 0;
+  backface-visibility: hidden;
+  -webkit-backface-visibility: hidden;
+  border-radius: 3px;
+  box-shadow: 6px 2px 18px #5e294526;
+}
+.memory-front img {
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+  display: block;
+}
+.memory-fold {
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(
+    90deg,
+    #512d4826,
+    #fff2 3%,
+    transparent 10%,
+    transparent 85%,
+    #fff3 98%
+  );
+  pointer-events: none;
+}
+.memory-back {
+  transform: rotateY(180deg);
+  background: linear-gradient(90deg, #e6d4dc, #fff6fa 12%, #f5e8ee 90%, #baa0b5);
+}
+.memory-tap {
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  width: 35%;
+  z-index: 3;
+  background: transparent;
+  border: 0;
+}
+.memory-left {
+  left: 0;
+}
+.memory-right {
+  right: 0;
+}
+.memory-hint {
+  text-align: center;
+  margin-top: 12px;
+  font-size: 12px;
+  line-height: 1.5;
+  color: #7d4760;
+}
+.memory-controls {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 26px;
+  margin-top: 4px;
+  font-size: 12px;
+  color: #7d4760;
+}
+.memory-controls button {
+  width: 44px;
+  height: 44px;
+  border-radius: 12px;
+  background: #ffe0ec;
+  font-size: 20px;
+}
+.memory-controls button:disabled {
+  opacity: 0.35;
+}
+@media (prefers-reduced-motion: reduce) {
+  .memory-turning {
+    transition: none !important;
+  }
+}
+
+@media (max-width: 420px) {
+  .memory-book { padding: 16px 8px 12px; }
+  .memory-stage { width: min(94vw, 360px); perspective: 1300px; }
+  .memory-page, .memory-front img { object-fit: contain; }
+  .memory-hint { margin-top: 10px; }
+}
