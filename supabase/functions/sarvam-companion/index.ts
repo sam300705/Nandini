@@ -43,6 +43,7 @@ function cors(req: Request) {
   const origin = req.headers.get("origin") ?? "";
   const allowed =
     (Boolean(Deno.env.get("APP_ALLOWED_ORIGIN")) && origin === Deno.env.get("APP_ALLOWED_ORIGIN")) ||
+    origin === "https://nandini.cc.cd" ||
     origin === "http://localhost:3000" ||
     origin === "http://localhost:5173" ||
     origin === "http://127.0.0.1:5173" ||
@@ -126,6 +127,7 @@ Deno.serve(async (req: Request) => {
   if (
     origin &&
     (!Deno.env.get("APP_ALLOWED_ORIGIN") || origin !== Deno.env.get("APP_ALLOWED_ORIGIN")) &&
+    origin !== "https://nandini.cc.cd" &&
     origin !== "http://localhost:3000" &&
     origin !== "http://localhost:5173" &&
     origin !== "http://127.0.0.1:5173" &&
