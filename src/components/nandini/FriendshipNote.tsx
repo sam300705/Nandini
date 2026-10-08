@@ -87,8 +87,8 @@ export default function FriendshipNote({ onBack }: Props) {
         <>
           <div className="friendship-book-shell">
             <article
-              key={page.page_number}
               className="friendship-paper"
+              aria-live="polite"
               aria-label={"Notebook page " + page.page_number}
               tabIndex={0}
               onKeyDown={(event) => {
