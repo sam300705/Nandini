@@ -1,6 +1,6 @@
 import { createFileRoute } from "@tanstack/react-router";
 import { useState } from "react";
-import { BookOpen, Home, LogOut, Sparkles, UsersRound } from "lucide-react";
+import { BookOpen, Home, LogOut, NotebookPen, Sparkles, UsersRound } from "lucide-react";
 import HomeTab from "@/components/nandini/HomeTab";
 import FriendshipNote from "@/components/nandini/FriendshipNote";
 import { AuthProvider } from "@/auth/AuthProvider";
@@ -36,6 +36,11 @@ const tabs = [
   { id: "together", label: "Friendship Diary", icon: UsersRound },
 ] as const;
 
+const guestTabs = [
+  { id: "home", label: "Home", icon: Home },
+  { id: "note", label: "Friendship Note", icon: NotebookPen },
+] as const;
+
 function Index() {
   return (
     <AuthProvider>
@@ -49,6 +54,7 @@ function FriendshipApp() {
   const [tab, setTab] = useState<Tab>("home");
   // Do not show protected diary tabs while signed out. Supabase RLS remains in force.
   const currentTab = !session && (tab === "diary" || tab === "together") ? "home" : tab;
+  const visibleTabs = session ? tabs : guestTabs;
 
   return (
     <div className="gradient-pink min-h-dvh">
@@ -63,13 +69,13 @@ function FriendshipApp() {
               <Sparkles size={11} /> {session ? "PRIVATE" : "FRIENDSHIP"}
             </span>
             {session && (
-            <button
+              <button
               aria-label="Lock"
               onClick={() => void logout()}
               className="rounded-full p-1.5 text-muted-foreground hover:text-primary"
             >
               <LogOut size={16} />
-            </button>
+              </button>
             )}
           </div>
         </header>
@@ -88,7 +94,7 @@ function FriendshipApp() {
         aria-label="Main navigation"
         className="glass-pink fixed inset-x-0 bottom-3 z-40 mx-auto flex w-[calc(100%-2rem)] max-w-lg justify-around rounded-2xl p-1.5"
       >
-        {tabs.filter((t) => Boolean(session) || t.id === "home").map((t) => {
+        {visibleTabs.map((t) => {
           const Icon = t.icon;
           const active = currentTab === t.id;
           return (
