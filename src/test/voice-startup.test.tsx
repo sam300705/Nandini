@@ -50,7 +50,7 @@ beforeEach(() => {
   trackStop.mockClear();
   getUserMedia.mockReset();
   getUserMedia.mockResolvedValue(stream);
-  vi.stubEnv("VITE_SUPABASE_URL", "https://test.supabase.co");
+  vi.stubEnv("VITE_NANDINI_SUPABASE_URL", "https://mkmejcplhumumfxvlesa.supabase.co");
   vi.stubGlobal("MediaRecorder", Recorder);
   vi.stubGlobal("AudioContext", Audio);
   vi.stubGlobal(
