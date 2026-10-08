@@ -1,7 +1,6 @@
 import { createFileRoute } from "@tanstack/react-router";
 import { useState } from "react";
 import { BookOpen, Home, LogOut, Sparkles, UsersRound } from "lucide-react";
-import LockScreen from "@/components/nandini/LockScreen";
 import HomeTab from "@/components/nandini/HomeTab";
 import FriendshipNote from "@/components/nandini/FriendshipNote";
 import { AuthProvider } from "@/auth/AuthProvider";
@@ -40,16 +39,16 @@ const tabs = [
 function Index() {
   return (
     <AuthProvider>
-      <PrivateApp />
+      <FriendshipApp />
     </AuthProvider>
   );
 }
 
-function PrivateApp() {
-  const { session, loading, logout } = useAuth();
+function FriendshipApp() {
+  const { session, logout } = useAuth();
   const [tab, setTab] = useState<Tab>("home");
-  if (loading) return <div className="gradient-pink min-h-dvh" />;
-  if (!session) return <LockScreen />;
+  // Do not show protected diary tabs while signed out. Supabase RLS remains in force.
+  const currentTab = !session && (tab === "diary" || tab === "together") ? "home" : tab;
 
   return (
     <div className="gradient-pink min-h-dvh">
@@ -61,8 +60,9 @@ function PrivateApp() {
           </div>
           <div className="flex items-center gap-2">
             <span className="flex items-center gap-1 rounded-full bg-accent px-2 py-1 text-[10px] font-semibold tracking-wider text-accent-foreground">
-              <Sparkles size={11} /> PRIVATE
+              <Sparkles size={11} /> {session ? "PRIVATE" : "FRIENDSHIP"}
             </span>
+            {session && (
             <button
               aria-label="Lock"
               onClick={() => void logout()}
@@ -70,26 +70,27 @@ function PrivateApp() {
             >
               <LogOut size={16} />
             </button>
+            )}
           </div>
         </header>
 
-        <main key={tab} className="animate-in fade-in slide-in-from-bottom-2 duration-300">
-          {tab === "home" && <HomeTab onOpenNote={() => setTab("note")} />}
-          {tab === "note" && <FriendshipNote onBack={() => setTab("home")} />}
-          {tab === "diary" && <DiaryTab />}
-          {tab === "together" && <TogetherDiaryTab />}
+        <main key={currentTab} className="animate-in fade-in slide-in-from-bottom-2 duration-300">
+          {currentTab === "home" && <HomeTab onOpenNote={() => setTab("note")} />}
+          {currentTab === "note" && <FriendshipNote onBack={() => setTab("home")} />}
+          {session && currentTab === "diary" && <DiaryTab />}
+          {session && currentTab === "together" && <TogetherDiaryTab />}
         </main>
       </div>
 
-      <VoiceCompanion visible={tab === "home"} />
+      {session && <VoiceCompanion visible={currentTab === "home"} />}
 
       <nav
         aria-label="Main navigation"
         className="glass-pink fixed inset-x-0 bottom-3 z-40 mx-auto flex w-[calc(100%-2rem)] max-w-lg justify-around rounded-2xl p-1.5"
       >
-        {tabs.map((t) => {
+        {tabs.filter((t) => Boolean(session) || t.id === "home").map((t) => {
           const Icon = t.icon;
-          const active = tab === t.id;
+          const active = currentTab === t.id;
           return (
             <button
               key={t.id}
