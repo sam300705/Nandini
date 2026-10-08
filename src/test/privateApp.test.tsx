@@ -47,7 +47,7 @@ vi.mock("@/components/nandini/TogetherDiaryTab", () => ({
   default: () => <p>Sambhav and Nandini Diary</p>,
 }));
 vi.mock("@/components/nandini/VoiceCompanion", () => ({
-  default: () => <p>Authenticated voice companion</p>,
+  default: () => <p>Floating teddy voice companion</p>,
 }));
 
 const session = {
@@ -72,7 +72,7 @@ it("opens the public friendship home and all notebook pages without any password
   expect(await screen.findByText("Public Home")).toBeVisible();
   expect(screen.queryByLabelText("Password")).toBeNull();
   expect(screen.queryByText("Private Diary")).toBeNull();
-  expect(screen.queryByText("Authenticated voice companion")).toBeNull();
+  expect(screen.getByText("Floating teddy voice companion")).toBeVisible();
   expect(
     screen.getByRole("navigation", { name: "Main navigation" }).querySelectorAll("button"),
   ).toHaveLength(2);
@@ -85,7 +85,7 @@ it("opens the public friendship home and all notebook pages without any password
 
 it("preserves private diaries only for a verified session, and hides them after logout", async () => {
   render(<Page />);
-  await screen.findByText("Authenticated voice companion");
+  await screen.findByText("Floating teddy voice companion");
   const navigation = screen.getByRole("navigation", { name: "Main navigation" });
   expect(navigation.querySelectorAll("button")).toHaveLength(3);
   expect(screen.queryByRole("button", { name: "Gallery" })).toBeNull();
@@ -106,7 +106,7 @@ it("continues to show the public site if a session is revoked", async () => {
   expect(await screen.findByText("Public Home")).toBeVisible();
   view.unmount();
   render(<Page />);
-  await screen.findByText("Authenticated voice companion");
+  await screen.findByText("Floating teddy voice companion");
   act(() => mocks.listener?.("SIGNED_OUT", null));
   expect(await screen.findByText("Public Home")).toBeVisible();
   expect(screen.queryByRole("button", { name: "Diary" })).toBeNull();
