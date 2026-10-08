@@ -1,6 +1,6 @@
 import "jsr:@supabase/functions-js/edge-runtime.d.ts";
 import { createClient } from "npm:@supabase/supabase-js@2.103.3";
-import { buildSarvamTtsRequest } from "../sarvam-companion/speech.ts";
+import { buildSarvamTtsRequest } from "./speech.ts";
 
 const MAX_AUDIO_BYTES = 2 * 1024 * 1024;
 const allowedOrigin = (origin: string) =>
@@ -84,7 +84,12 @@ Deno.serve(async (request: Request) => {
 
   const historyText = String(form?.get("history") ?? "[]");
   if (historyText.length > 4000) return reply(request, { error: "Conversation context is too long." }, 400);
-  const parsedHistory: unknown = JSON.parse(historyText || "[]");
+  let parsedHistory: unknown;
+  try {
+    parsedHistory = JSON.parse(historyText || "[]");
+  } catch {
+    return reply(request, { error: "Invalid conversation context." }, 400);
+  }
   if (!Array.isArray(parsedHistory)) return reply(request, { error: "Invalid conversation context." }, 400);
   if (parsedHistory.length > 6 || parsedHistory.some((item) =>
     !item || typeof item !== "object" ||
