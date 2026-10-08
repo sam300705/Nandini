@@ -19,27 +19,24 @@ describe("voice conversation anti-repetition rules", () => {
     expect(isIdentityBoilerplate("user", "I am building an AI companion")).toBe(false);
   });
 
-  it.each([
-    "who are you?",
-    "tum kaun ho",
-    "तुम कौन हो?",
-    "are you an AI?",
-  ])("allows identity disclosure only for direct identity questions: %s", (value) => {
-    expect(isIdentityQuestion(value)).toBe(true);
-  });
+  it.each(["who are you?", "tum kaun ho", "तुम कौन हो?", "are you an AI?"])(
+    "allows identity disclosure only for direct identity questions: %s",
+    (value) => {
+      expect(isIdentityQuestion(value)).toBe(true);
+    },
+  );
 
   it("does not mistake normal conversation for an identity question", () => {
     expect(isIdentityQuestion("aaj kya karu yaar")).toBe(false);
     expect(isIdentityQuestion("mera din mast tha")).toBe(false);
   });
 
-  it.each([
-    "woh mujhe ignore kar rahi hai",
-    "she is ignoring you",
-    "interested nahi hai",
-  ])("flags categorical relationship conclusions: %s", (value) => {
-    expect(isOverconfidentRelationshipConclusion("assistant", value)).toBe(true);
-  });
+  it.each(["woh mujhe ignore kar rahi hai", "she is ignoring you", "interested nahi hai"])(
+    "flags categorical relationship conclusions: %s",
+    (value) => {
+      expect(isOverconfidentRelationshipConclusion("assistant", value)).toBe(true);
+    },
+  );
 
   it.each([
     "ho sakta hai woh busy ho, sirf reply se pakka nahi bol sakte",

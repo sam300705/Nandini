@@ -36,7 +36,10 @@ function Countdown() {
       </p>
       <div className="grid grid-cols-4 gap-2">
         {units.map((unit) => (
-          <div key={unit.label} className="rounded-xl border border-border/60 bg-background/50 py-2">
+          <div
+            key={unit.label}
+            className="rounded-xl border border-border/60 bg-background/50 py-2"
+          >
             <p className="text-gradient text-2xl font-bold tabular-nums">
               {String(unit.value).padStart(2, "0")}
             </p>
@@ -64,12 +67,15 @@ export default function HomeTab({ onOpenNote }: { onOpenNote: () => void }) {
         </p>
         <h2 className="text-gradient text-2xl font-bold">Hey Nandini! 👋</h2>
         <p className="text-sm leading-relaxed text-muted-foreground">
-          Sambhav made this little corner for you — a place for random talks,
-          everyday stories, goofy memories and good friendship vibes. No cheesy stuff. 😄
+          Sambhav made this little corner for you — a place for random talks, everyday stories,
+          goofy memories and good friendship vibes. No cheesy stuff. 😄
         </p>
         <div className="flex flex-wrap gap-1.5">
           {tags.map((tag) => (
-            <span key={tag} className="rounded-full bg-accent px-2.5 py-1 text-xs font-medium text-accent-foreground">
+            <span
+              key={tag}
+              className="rounded-full bg-accent px-2.5 py-1 text-xs font-medium text-accent-foreground"
+            >
               {tag}
             </span>
           ))}
@@ -86,10 +92,18 @@ export default function HomeTab({ onOpenNote }: { onOpenNote: () => void }) {
           <NotebookPen size={25} aria-hidden="true" />
         </span>
         <span className="min-w-0 flex-1">
-          <span className="block text-xs font-bold uppercase tracking-wider text-primary">A note from a friend</span>
-          <span className="mt-1 block text-sm text-foreground">From our first year at Dronacharya to friendships that last.</span>
+          <span className="block text-xs font-bold uppercase tracking-wider text-primary">
+            A note from a friend
+          </span>
+          <span className="mt-1 block text-sm text-foreground">
+            From our first year at Dronacharya to friendships that last.
+          </span>
         </span>
-        <ArrowRight size={19} className="shrink-0 text-primary transition group-hover:translate-x-1" aria-hidden="true" />
+        <ArrowRight
+          size={19}
+          className="shrink-0 text-primary transition group-hover:translate-x-1"
+          aria-hidden="true"
+        />
       </button>
 
       <MemoryBook />
@@ -121,7 +135,9 @@ export default function HomeTab({ onOpenNote }: { onOpenNote: () => void }) {
           </p>
         )}
         <button
-          onClick={() => setCompliment(compliments[Math.floor(Math.random() * compliments.length)] ?? "")}
+          onClick={() =>
+            setCompliment(compliments[Math.floor(Math.random() * compliments.length)] ?? "")
+          }
           className="gradient-primary rounded-xl px-4 py-2 text-sm font-medium"
         >
           Give me a high-five! 🙌

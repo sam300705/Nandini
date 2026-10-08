@@ -15,6 +15,8 @@ describe("private friendship letter", () => {
   it("rejects incomplete, duplicate, and unexpected page data", () => {
     expect(() => parseFriendshipPages(valid.slice(0, 2))).toThrow();
     expect(() => parseFriendshipPages([valid[0], valid[0], valid[2]])).toThrow();
-    expect(() => parseFriendshipPages([{ ...valid[0], secret: "unexpected" }, valid[1], valid[2]])).toThrow();
+    expect(() =>
+      parseFriendshipPages([{ ...valid[0], secret: "unexpected" }, valid[1], valid[2]]),
+    ).toThrow();
   });
 });

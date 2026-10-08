@@ -18,7 +18,12 @@ describe("Sarvam Bulbul v3 speech delivery", () => {
   it.each(["आज मैं बहुत उदास हूँ", "I'm feeling lonely", "yaar bahut pareshan hoon"])(
     "uses a calmer delivery for sensitive context: %s",
     (context) => {
-      const request = buildSarvamTtsRequest("मैं यहीं हूँ, बता क्या हुआ?", "kavya", "hi-IN", context);
+      const request = buildSarvamTtsRequest(
+        "मैं यहीं हूँ, बता क्या हुआ?",
+        "kavya",
+        "hi-IN",
+        context,
+      );
       expect(request.pace).toBeLessThan(1);
       expect(request.temperature).toBeLessThan(0.6);
     },

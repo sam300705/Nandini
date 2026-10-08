@@ -27,7 +27,9 @@ vi.mock("@/integrations/supabase/client", () => ({
 vi.mock("@/components/nandini/LockScreen", () => ({ default: () => <p>Private sign-in gate</p> }));
 vi.mock("@/components/nandini/HomeTab", () => ({ default: () => <p>Private Home</p> }));
 vi.mock("@/components/nandini/DiaryTab", () => ({ default: () => <p>Private Diary</p> }));
-vi.mock("@/components/nandini/TogetherDiaryTab", () => ({ default: () => <p>Sambhav and Nandini Diary</p> }));
+vi.mock("@/components/nandini/TogetherDiaryTab", () => ({
+  default: () => <p>Sambhav and Nandini Diary</p>,
+}));
 const session = {
   user: { id: "owner" },
   access_token: "test",

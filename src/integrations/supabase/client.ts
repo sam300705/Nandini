@@ -11,7 +11,9 @@ export const loginEmail =
 let validUrl = false;
 try {
   const parsed = new URL(url);
-  validUrl = Boolean(projectId && parsed.protocol === "https:" && parsed.hostname === `${projectId}.supabase.co`);
+  validUrl = Boolean(
+    projectId && parsed.protocol === "https:" && parsed.hostname === `${projectId}.supabase.co`,
+  );
 } catch {
   // The setup screen handles an unconfigured independent project.
 }

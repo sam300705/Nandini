@@ -1,11 +1,13 @@
 import { z } from "zod";
 import { supabase } from "@/integrations/supabase/client";
 
-const privatePageSchema = z.object({
-  page_number: z.number().int().min(1).max(3),
-  heading: z.string().min(1).max(100),
-  paragraphs: z.array(z.string().min(1).max(800)).min(1).max(8),
-}).strict();
+const privatePageSchema = z
+  .object({
+    page_number: z.number().int().min(1).max(3),
+    heading: z.string().min(1).max(100),
+    paragraphs: z.array(z.string().min(1).max(800)).min(1).max(8),
+  })
+  .strict();
 
 export type FriendshipPage = z.infer<typeof privatePageSchema>;
 

@@ -555,7 +555,12 @@ export default function VoiceCompanion({ visible = true }: { visible?: boolean }
           aria-label="Open Nandini's voice companion"
           onClick={() => setExpanded(true)}
         >
-          <TeddyFace state={state} stageRef={stageRef} expanded={false} analyserRef={playbackAnalyserRef} />
+          <TeddyFace
+            state={state}
+            stageRef={stageRef}
+            expanded={false}
+            analyserRef={playbackAnalyserRef}
+          />
           <span>Chal baat karein 👋</span>
         </button>
       ) : (

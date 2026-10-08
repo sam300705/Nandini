@@ -39,15 +39,19 @@ export default function FriendshipNote({ onBack }: Props) {
     let active = true;
     if (!ownerId) return;
     setStatus("loading");
-    void loadFriendshipPages(ownerId).then((loaded) => {
-      if (!active) return;
-      setPages(loaded);
-      setIndex(0);
-      setStatus(loaded.length === 3 ? "ready" : "empty");
-    }).catch(() => {
-      if (active) setStatus("error");
-    });
-    return () => { active = false; };
+    void loadFriendshipPages(ownerId)
+      .then((loaded) => {
+        if (!active) return;
+        setPages(loaded);
+        setIndex(0);
+        setStatus(loaded.length === 3 ? "ready" : "empty");
+      })
+      .catch(() => {
+        if (active) setStatus("error");
+      });
+    return () => {
+      active = false;
+    };
   }, [ownerId, retry]);
 
   const move = (delta: number) => {
@@ -62,14 +66,20 @@ export default function FriendshipNote({ onBack }: Props) {
       </button>
 
       <header className="friendship-intro">
-        <div className="friendship-seal" aria-hidden="true"><NotebookPen size={25} /></div>
+        <div className="friendship-seal" aria-hidden="true">
+          <NotebookPen size={25} />
+        </div>
         <p className="friendship-eyebrow">A little something, just for you</p>
-        <h2>Hey Nandini! <span aria-hidden="true">✦</span></h2>
+        <h2>
+          Hey Nandini! <span aria-hidden="true">✦</span>
+        </h2>
         <p>A friendship note about the memories that began at Dronacharya.</p>
       </header>
 
       {status === "loading" && (
-        <div className="friendship-message" role="status">Opening your little notebook… ✨</div>
+        <div className="friendship-message" role="status">
+          Opening your little notebook… ✨
+        </div>
       )}
       {status === "empty" && (
         <div className="friendship-message" role="status">
@@ -80,7 +90,9 @@ export default function FriendshipNote({ onBack }: Props) {
       {status === "error" && (
         <div className="friendship-message" role="alert">
           <p>We couldn't open the note just now.</p>
-          <button type="button" onClick={() => setRetry((value) => value + 1)}>Try again</button>
+          <button type="button" onClick={() => setRetry((value) => value + 1)}>
+            Try again
+          </button>
         </div>
       )}
       {status === "ready" && page && (
@@ -98,10 +110,15 @@ export default function FriendshipNote({ onBack }: Props) {
                 }
               }}
               onTouchStart={(event) => {
-                if (event.touches.length !== 1) { touch.current = null; return; }
+                if (event.touches.length !== 1) {
+                  touch.current = null;
+                  return;
+                }
                 touch.current = { x: event.touches[0].clientX, y: event.touches[0].clientY };
               }}
-              onTouchCancel={() => { touch.current = null; }}
+              onTouchCancel={() => {
+                touch.current = null;
+              }}
               onTouchEnd={(event) => {
                 const start = touch.current;
                 touch.current = null;
@@ -111,31 +128,52 @@ export default function FriendshipNote({ onBack }: Props) {
                 if (Math.abs(dx) > 65 && Math.abs(dx) > Math.abs(dy) * 1.5) move(dx < 0 ? 1 : -1);
               }}
             >
-              <div className="friendship-page-decor" aria-hidden="true">✿ ✦ ✿</div>
+              <div className="friendship-page-decor" aria-hidden="true">
+                ✿ ✦ ✿
+              </div>
               <div className="friendship-ribbon">Friendship notes ✦</div>
-              <div className="friendship-page-caption">A friendship worth keeping · page {page.page_number}</div>
+              <div className="friendship-page-caption">
+                A friendship worth keeping · page {page.page_number}
+              </div>
               <h3>{page.heading}</h3>
               <div className="friendship-writing">
                 {page.paragraphs.map((paragraph, paragraphIndex) => (
                   <HandwrittenParagraph key={paragraphIndex} text={paragraph} />
                 ))}
               </div>
-              {page.page_number === 3 && <p className="friendship-signature">— Your friend, Sambhav ✦</p>}
+              {page.page_number === 3 && (
+                <p className="friendship-signature">— Your friend, Sambhav ✦</p>
+              )}
               <span className="friendship-page-number">~ {page.page_number} ~</span>
             </article>
           </div>
           <p className="friendship-hint">Swipe the paper or use ← → to turn the page.</p>
           <nav className="friendship-pagination" aria-label="Friendship note pages">
-            <button type="button" aria-label="Previous page" disabled={index === 0} onClick={() => move(-1)}>
+            <button
+              type="button"
+              aria-label="Previous page"
+              disabled={index === 0}
+              onClick={() => move(-1)}
+            >
               <ChevronLeft size={19} /> Previous
             </button>
-            <span role="status" aria-live="polite">Page {index + 1} of {pages.length}</span>
-            <button type="button" aria-label="Next page" disabled={index === pages.length - 1} onClick={() => move(1)}>
+            <span role="status" aria-live="polite">
+              Page {index + 1} of {pages.length}
+            </span>
+            <button
+              type="button"
+              aria-label="Next page"
+              disabled={index === pages.length - 1}
+              onClick={() => move(1)}
+            >
               Next <ChevronRight size={19} />
             </button>
           </nav>
           {index === pages.length - 1 && (
-            <p className="friendship-ending">Some friendships begin in college, but last far beyond it. <ArrowRight size={16} aria-hidden="true" /></p>
+            <p className="friendship-ending">
+              Some friendships begin in college, but last far beyond it.{" "}
+              <ArrowRight size={16} aria-hidden="true" />
+            </p>
           )}
         </>
       )}
