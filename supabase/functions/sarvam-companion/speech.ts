@@ -19,8 +19,16 @@ export function buildSarvamTtsRequest(
   context = "",
 ): SarvamTtsRequest {
   const empathetic = seriousContext.test(`${context} ${reply}`);
+  // Keep tabs and line breaks but remove non-printing controls before sending TTS.
+  const cleanText = Array.from(reply)
+    .filter((character) => {
+      const code = character.charCodeAt(0);
+      return code === 9 || code === 10 || code === 13 || code >= 32;
+    })
+    .join("")
+    .slice(0, 2500);
   return {
-    text: reply.replace(/[\u0000-\u0008\u000b\u000c\u000e-\u001f]/g, "").slice(0, 2500),
+    text: cleanText,
     language_code: languageCode,
     speaker,
     model: "bulbul:v3",
