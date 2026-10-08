@@ -73,7 +73,7 @@ it("opens the public friendship home and all notebook pages without any password
   expect(screen.queryByLabelText("Password")).toBeNull();
   expect(screen.queryByText("Private Diary")).toBeNull();
   expect(screen.queryByText("Authenticated voice companion")).toBeNull();
-  expect(screen.getByRole("navigation", { name: "Main navigation" }).querySelectorAll("button")).toHaveLength(1);
+  expect(screen.getByRole("navigation", { name: "Main navigation" }).querySelectorAll("button")).toHaveLength(2);
 
   fireEvent.click(screen.getByRole("button", { name: "Open your friendship note" }));
   expect(screen.getByText("Public friendship notebook")).toBeVisible();
