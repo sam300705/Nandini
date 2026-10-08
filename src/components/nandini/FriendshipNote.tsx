@@ -1,11 +1,9 @@
-import { useEffect, useRef, useState } from "react";
+import { useRef, useState } from "react";
 import { ArrowLeft, ArrowRight, NotebookPen, ChevronLeft, ChevronRight } from "lucide-react";
-import { useAuth } from "@/auth/useAuth";
-import { loadFriendshipPages, type FriendshipPage } from "@/lib/friendshipLetter";
+import { publicFriendshipPages } from "@/lib/publicFriendshipPages";
 import "./friendship-note.css";
 
 type Props = { onBack: () => void };
-type LoadState = "loading" | "ready" | "empty" | "error";
 
 function HandwrittenParagraph({ text }: { text: string }) {
   // These limited marker tokens create colored highlighter strokes, not HTML.
@@ -27,35 +25,12 @@ function HandwrittenParagraph({ text }: { text: string }) {
 }
 
 export default function FriendshipNote({ onBack }: Props) {
-  const { session } = useAuth();
-  const ownerId = session?.user.id;
-  const [pages, setPages] = useState<FriendshipPage[]>([]);
-  const [status, setStatus] = useState<LoadState>("loading");
+  const pages = publicFriendshipPages;
   const [index, setIndex] = useState(0);
-  const [retry, setRetry] = useState(0);
   const touch = useRef<{ x: number; y: number } | null>(null);
 
-  useEffect(() => {
-    let active = true;
-    if (!ownerId) return;
-    setStatus("loading");
-    void loadFriendshipPages(ownerId)
-      .then((loaded) => {
-        if (!active) return;
-        setPages(loaded);
-        setIndex(0);
-        setStatus(loaded.length === 3 ? "ready" : "empty");
-      })
-      .catch(() => {
-        if (active) setStatus("error");
-      });
-    return () => {
-      active = false;
-    };
-  }, [ownerId, retry]);
-
   const move = (delta: number) => {
-    setIndex((current) => Math.min(Math.max(current + delta, 0), Math.max(pages.length - 1, 0)));
+    setIndex((current) => Math.min(Math.max(current + delta, 0), pages.length - 1));
   };
   const page = pages[index];
 
@@ -76,26 +51,7 @@ export default function FriendshipNote({ onBack }: Props) {
         <p>A friendship note about the memories that began at Dronacharya.</p>
       </header>
 
-      {status === "loading" && (
-        <div className="friendship-message" role="status">
-          Opening your little notebook… ✨
-        </div>
-      )}
-      {status === "empty" && (
-        <div className="friendship-message" role="status">
-          <NotebookPen size={28} aria-hidden="true" />
-          <p>This note is being kept safe until it's ready for you. ✨</p>
-        </div>
-      )}
-      {status === "error" && (
-        <div className="friendship-message" role="alert">
-          <p>We couldn't open the note just now.</p>
-          <button type="button" onClick={() => setRetry((value) => value + 1)}>
-            Try again
-          </button>
-        </div>
-      )}
-      {status === "ready" && page && (
+      {page && (
         <>
           <div className="friendship-book-shell">
             <article
