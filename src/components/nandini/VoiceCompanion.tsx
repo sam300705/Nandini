@@ -259,7 +259,6 @@ export default function VoiceCompanion({ visible = true }: { visible?: boolean }
         if (!supabaseUrl) throw new Error("Nandini voice configuration is missing.");
         const voicePath = accessToken ? "sarvam-companion" : "guest-sarvam-companion";
 
-
         const body = new FormData();
         body.append("audio", audio, "utterance.webm");
         body.append("recorder_mime_type", recorderMimeType);
@@ -482,7 +481,10 @@ export default function VoiceCompanion({ visible = true }: { visible?: boolean }
         signal: controller.signal,
       })
         .then(async (health) => {
-          const payload = (await health.json().catch(() => ({}))) as { ready?: boolean; error?: string };
+          const payload = (await health.json().catch(() => ({}))) as {
+            ready?: boolean;
+            error?: string;
+          };
           if (!health.ok || !payload.ready) throw new Error(payload.error ?? "Voice is not ready.");
         })
         .catch(() => {
@@ -609,7 +611,11 @@ export default function VoiceCompanion({ visible = true }: { visible?: boolean }
             )}
           </div>
 
-          <p className="vc-privacy">{session ? "Private chat · saved to your account" : "Guest chat · only remembered while this page is open · daily usage limits apply"}</p>
+          <p className="vc-privacy">
+            {session
+              ? "Private chat · saved to your account"
+              : "Guest chat · only remembered while this page is open · daily usage limits apply"}
+          </p>
         </section>
       )}
     </div>

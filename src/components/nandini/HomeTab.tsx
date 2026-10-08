@@ -82,7 +82,10 @@ export default function HomeTab({ onOpenNote }: { onOpenNote: () => void }) {
         </div>
       </section>
 
-      <section className="glass-pink overflow-hidden rounded-2xl border border-border shadow-sm" aria-label="Friendship photo">
+      <section
+        className="glass-pink overflow-hidden rounded-2xl border border-border shadow-sm"
+        aria-label="Friendship photo"
+      >
         <div className="relative overflow-hidden bg-accent/40">
           <img
             src="/nandini-friendship-photo.jpg"

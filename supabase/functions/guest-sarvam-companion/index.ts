@@ -31,7 +31,7 @@ function reply(request: Request, value: unknown, status = 200) {
 async function safeJson(response: Response): Promise<Record<string, unknown>> {
   const value = await response.json().catch(() => null);
   return value && typeof value === "object" && !Array.isArray(value)
-    ? value as Record<string, unknown>
+    ? (value as Record<string, unknown>)
     : {};
 }
 
@@ -59,7 +59,11 @@ Deno.serve(async (request: Request) => {
   const contentType = request.headers.get("content-type") ?? "";
   if (contentType.startsWith("application/json")) {
     const payload = await request.json().catch(() => null);
-    if (payload && typeof payload === "object" && (payload as {action?: string}).action === "health") {
+    if (
+      payload &&
+      typeof payload === "object" &&
+      (payload as { action?: string }).action === "health"
+    ) {
       return reply(request, { ready: true, voice: "kavya", provider: "sarvam" });
     }
     return reply(request, { error: "Invalid request" }, 400);
@@ -70,11 +74,16 @@ Deno.serve(async (request: Request) => {
 
   // Only Supabase's trusted edge header is used; never trust a client-provided user ID.
   const ip = request.headers.get("cf-connecting-ip");
-  if (!ip || ip.length > 64) return reply(request, { error: "Guest protection is unavailable" }, 503);
+  if (!ip || ip.length > 64)
+    return reply(request, { error: "Guest protection is unavailable" }, 503);
   const form = await request.formData().catch(() => null);
   const audio = form?.get("audio");
-  if (!(audio instanceof File) || audio.size < 512 || audio.size > MAX_AUDIO_BYTES ||
-      !audio.type.toLowerCase().startsWith("audio/webm")) {
+  if (
+    !(audio instanceof File) ||
+    audio.size < 512 ||
+    audio.size > MAX_AUDIO_BYTES ||
+    !audio.type.toLowerCase().startsWith("audio/webm")
+  ) {
     return reply(request, { error: "Please record a short WebM voice clip." }, 413);
   }
   const durationMs = Number(form?.get("duration_ms") ?? 0);
@@ -83,19 +92,28 @@ Deno.serve(async (request: Request) => {
   }
 
   const historyText = String(form?.get("history") ?? "[]");
-  if (historyText.length > 4000) return reply(request, { error: "Conversation context is too long." }, 400);
+  if (historyText.length > 4000)
+    return reply(request, { error: "Conversation context is too long." }, 400);
   let parsedHistory: unknown;
   try {
     parsedHistory = JSON.parse(historyText || "[]");
   } catch {
     return reply(request, { error: "Invalid conversation context." }, 400);
   }
-  if (!Array.isArray(parsedHistory)) return reply(request, { error: "Invalid conversation context." }, 400);
-  if (parsedHistory.length > 6 || parsedHistory.some((item) =>
-    !item || typeof item !== "object" ||
-    !["user", "assistant"].includes(item.role) ||
-    typeof item.content !== "string" || item.content.length > 450
-  )) return reply(request, { error: "Conversation context is invalid." }, 400);
+  if (!Array.isArray(parsedHistory))
+    return reply(request, { error: "Invalid conversation context." }, 400);
+  if (
+    parsedHistory.length > 6 ||
+    parsedHistory.some(
+      (item) =>
+        !item ||
+        typeof item !== "object" ||
+        !["user", "assistant"].includes(item.role) ||
+        typeof item.content !== "string" ||
+        item.content.length > 450,
+    )
+  )
+    return reply(request, { error: "Conversation context is invalid." }, 400);
   const history = parsedHistory.map((item) => ({
     role: item.role as "user" | "assistant",
     content: item.content as string,
@@ -104,13 +122,21 @@ Deno.serve(async (request: Request) => {
   // Hash IP with a server-only secret; neither raw IP nor audio nor conversation is persisted.
   const payload = new TextEncoder().encode(ip);
   const secret = new TextEncoder().encode(serviceKey);
-  const key = await crypto.subtle.importKey("raw", secret, { name: "HMAC", hash: "SHA-256" }, false, ["sign"]);
+  const key = await crypto.subtle.importKey(
+    "raw",
+    secret,
+    { name: "HMAC", hash: "SHA-256" },
+    false,
+    ["sign"],
+  );
   const digest = new Uint8Array(await crypto.subtle.sign("HMAC", key, payload));
   const ipHash = Array.from(digest, (part) => part.toString(16).padStart(2, "0")).join("");
   const admin = createClient(supabaseUrl, serviceKey, {
     auth: { persistSession: false, autoRefreshToken: false },
   });
-  const { data: accepted, error: quotaError } = await admin.rpc("reserve_guest_voice_turn", { p_hash: ipHash });
+  const { data: accepted, error: quotaError } = await admin.rpc("reserve_guest_voice_turn", {
+    p_hash: ipHash,
+  });
   if (quotaError) {
     console.error("Guest voice quota unavailable", { errorCode: quotaError.code });
     return reply(request, { error: "Voice protection is temporarily unavailable." }, 503);
@@ -132,8 +158,10 @@ Deno.serve(async (request: Request) => {
       signal: AbortSignal.timeout(30000),
     });
     const stt = await safeJson(sttResponse);
-    if (!sttResponse.ok) return reply(request, { stage, error: "Couldn't hear you. Try again." }, 502);
-    const transcript = typeof stt.transcript === "string" ? stt.transcript.trim().slice(0, 700) : "";
+    if (!sttResponse.ok)
+      return reply(request, { stage, error: "Couldn't hear you. Try again." }, 502);
+    const transcript =
+      typeof stt.transcript === "string" ? stt.transcript.trim().slice(0, 700) : "";
     if (!transcript) return reply(request, { stage, error: "Try speaking a little louder." }, 422);
 
     stage = "llm";
@@ -142,18 +170,24 @@ Deno.serve(async (request: Request) => {
       headers: { "api-subscription-key": sarvamKey, "Content-Type": "application/json" },
       body: JSON.stringify({
         model: "sarvam-105b-conversations",
-        messages: [{ role: "system", content: voicePrompt }, ...history, { role: "user", content: transcript }],
+        messages: [
+          { role: "system", content: voicePrompt },
+          ...history,
+          { role: "user", content: transcript },
+        ],
         max_tokens: 160,
         temperature: 0.85,
       }),
       signal: AbortSignal.timeout(30000),
     });
     const chat = await safeJson(chatResponse);
-    if (!chatResponse.ok) return reply(request, { stage, error: "Couldn't think of a reply. Try again." }, 502);
+    if (!chatResponse.ok)
+      return reply(request, { stage, error: "Couldn't think of a reply. Try again." }, 502);
     const choices = Array.isArray(chat.choices) ? chat.choices : [];
     const message = choices[0]?.message as { content?: unknown } | undefined;
     const answer = typeof message?.content === "string" ? message.content.trim().slice(0, 600) : "";
-    if (!answer) return reply(request, { stage, error: "Couldn't think of a reply. Try again." }, 502);
+    if (!answer)
+      return reply(request, { stage, error: "Couldn't think of a reply. Try again." }, 502);
 
     stage = "tts";
     const ttsRequest = buildSarvamTtsRequest(answer, "kavya", "hi-IN", transcript);
@@ -164,18 +198,29 @@ Deno.serve(async (request: Request) => {
       signal: AbortSignal.timeout(30000),
     });
     const tts = await safeJson(ttsResponse);
-    if (!ttsResponse.ok) return reply(request, { stage, error: "Couldn't speak the reply. Try again." }, 502);
+    if (!ttsResponse.ok)
+      return reply(request, { stage, error: "Couldn't speak the reply. Try again." }, 502);
     const audioResult = Array.isArray(tts.audios) ? tts.audios[0] : null;
     if (typeof audioResult !== "string" || audioResult.length < 64) {
       return reply(request, { stage, error: "Voice audio was unavailable." }, 502);
     }
 
     // No persistent conversation or raw audio storage in public guest mode.
-    return reply(request, { transcript, reply: answer, audio: audioResult, content_type: "audio/wav" });
+    return reply(request, {
+      transcript,
+      reply: answer,
+      audio: audioResult,
+      content_type: "audio/wav",
+    });
   } catch (error) {
     console.error("Nandini guest voice request failed", {
-      stage, type: error instanceof Error ? error.name : "unknown",
+      stage,
+      type: error instanceof Error ? error.name : "unknown",
     });
-    return reply(request, { stage, error: "Voice had a temporary problem. Please try again." }, 502);
+    return reply(
+      request,
+      { stage, error: "Voice had a temporary problem. Please try again." },
+      502,
+    );
   }
 });
