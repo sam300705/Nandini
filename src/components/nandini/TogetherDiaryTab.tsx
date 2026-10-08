@@ -15,6 +15,14 @@ type Entry = {
   createdAt: string;
 };
 
+type TogetherDiaryRow = {
+  id: string;
+  author: string;
+  entry_date: string;
+  mood: string;
+  content: string;
+  created_at: string;
+};
 const moods = ["🤝", "😂", "😊", "✨", "😎", "🎉"];
 
 const today = () => {
@@ -24,7 +32,7 @@ const today = () => {
   ).padStart(2, "0")}`;
 };
 
-function toEntry(row: any): Entry {
+function toEntry(row: TogetherDiaryRow): Entry {
   return {
     id: row.id,
     author: row.author === "sambhav" ? "sambhav" : "nandini",
