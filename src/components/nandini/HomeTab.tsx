@@ -1,4 +1,5 @@
 import MemoryBook from "./MemoryBook";
+import { BookHeart, ArrowRight } from "lucide-react";
 import { useEffect, useState } from "react";
 import { BIRTHDAY, compliments, littleNotes, shayaris, tags } from "@/lib/nandini-content";
 
@@ -40,7 +41,7 @@ function Countdown() {
     </div>
   );
 }
-export default function HomeTab() {
+export default function HomeTab({ onOpenLetter }: { onOpenLetter: () => void }) {
   const [compliment, setCompliment] = useState("");
   const [day, setDay] = useState(0);
   useEffect(() => setDay(new Date().getDate()), []);
@@ -53,6 +54,21 @@ export default function HomeTab() {
           <span key={tag} className="rounded-full bg-accent px-2.5 py-1 text-xs font-medium text-accent-foreground">{tag}</span>
         )}</div>
       </div>
+      <button
+        type="button"
+        onClick={onOpenLetter}
+        className="glass-pink group flex w-full items-center gap-3 rounded-2xl border border-pink-200/80 p-4 text-left transition hover:shadow-lg focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-pink-600"
+        aria-label="Open your friendship letter"
+      >
+        <span className="grid h-12 w-12 shrink-0 place-items-center rounded-2xl bg-pink-100 text-pink-600">
+          <BookHeart size={25} aria-hidden="true" />
+        </span>
+        <span className="min-w-0 flex-1">
+          <span className="block text-xs font-bold uppercase tracking-wider text-pink-700">A little letter for you</span>
+          <span className="mt-1 block text-sm text-foreground">From Dronacharya's first year to friends for years ♡</span>
+        </span>
+        <ArrowRight size={19} className="shrink-0 text-pink-600 transition group-hover:translate-x-1" aria-hidden="true" />
+      </button>
       <MemoryBook />
       <Countdown />
       <div className="glass-pink space-y-2 rounded-2xl p-5 text-center">
