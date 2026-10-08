@@ -70,11 +70,11 @@ function FriendshipApp() {
             </span>
             {session && (
               <button
-              aria-label="Lock"
-              onClick={() => void logout()}
-              className="rounded-full p-1.5 text-muted-foreground hover:text-primary"
-            >
-              <LogOut size={16} />
+                aria-label="Lock"
+                onClick={() => void logout()}
+                className="rounded-full p-1.5 text-muted-foreground hover:text-primary"
+              >
+                <LogOut size={16} />
               </button>
             )}
           </div>
