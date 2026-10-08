@@ -89,6 +89,7 @@ export default function VoiceCompanion({ visible = true }: { visible?: boolean }
   const requestRef = useRef<AbortController | null>(null);
   const healthRequestRef = useRef<AbortController | null>(null);
   const [introActive, setIntroActive] = useState(true);
+  const guestHistoryRef = useRef<Array<{ role: "user" | "assistant"; content: string }>>([]);
 
   const stateRef = useRef<CompanionState>("idle");
   const stageRef = useRef<HTMLDivElement | null>(null);
@@ -254,17 +255,19 @@ export default function VoiceCompanion({ visible = true }: { visible?: boolean }
       try {
         const controller = new AbortController();
         requestRef.current = controller;
-        const supabaseUrl = import.meta.env["VITE_SUPABASE_URL"] as string | undefined;
-        if (!supabaseUrl) throw new Error("Voice service configuration is missing.");
+        const supabaseUrl = import.meta.env["VITE_NANDINI_SUPABASE_URL"] as string | undefined;
+        if (!supabaseUrl) throw new Error("Nandini voice configuration is missing.");
+        const voicePath = accessToken ? "sarvam-companion" : "guest-sarvam-companion";
+        if (!accessToken) body.append("history", JSON.stringify(guestHistoryRef.current));
 
         const body = new FormData();
         body.append("audio", audio, "utterance.webm");
         body.append("recorder_mime_type", recorderMimeType);
         body.append("duration_ms", String(Math.round(durationMs)));
 
-        const response = await fetch(`${supabaseUrl}/functions/v1/sarvam-companion`, {
+        const response = await fetch(`${supabaseUrl}/functions/v1/${voicePath}`, {
           method: "POST",
-          headers: { Authorization: `Bearer ${accessToken}` },
+          headers: accessToken ? { Authorization: `Bearer ${accessToken}` } : {},
           body,
           signal: controller.signal,
         });
@@ -285,6 +288,13 @@ export default function VoiceCompanion({ visible = true }: { visible?: boolean }
           throw new Error(payload.error ?? "Teddy couldn't answer that.");
         }
 
+        if (!accessToken && payload.transcript && payload.reply) {
+          guestHistoryRef.current = [
+            ...guestHistoryRef.current,
+            { role: "user", content: payload.transcript.slice(0, 450) },
+            { role: "assistant", content: payload.reply.slice(0, 450) },
+          ].slice(-6);
+        }
         failedStage = "tts";
         await playReply(payload.audio, stream, accessToken);
       } catch {
@@ -440,7 +450,7 @@ export default function VoiceCompanion({ visible = true }: { visible?: boolean }
   );
 
   const startSession = useCallback(async () => {
-    if (!session?.access_token || localStreamRef.current || startingRef.current) return;
+    if (localStreamRef.current || startingRef.current) return;
     startingRef.current = true;
     const generation = generationRef.current;
 
@@ -453,31 +463,32 @@ export default function VoiceCompanion({ visible = true }: { visible?: boolean }
         throw new Error("This browser doesn't support the voice recorder.");
       }
 
-      const supabaseUrl = import.meta.env["VITE_SUPABASE_URL"] as string | undefined;
-      if (!supabaseUrl) throw new Error("Voice service configuration is missing.");
+      const supabaseUrl = import.meta.env["VITE_NANDINI_SUPABASE_URL"] as string | undefined;
+      if (!supabaseUrl) throw new Error("Nandini voice configuration is missing.");
+      const accessToken = session?.access_token ?? "";
+      const voicePath = accessToken ? "sarvam-companion" : "guest-sarvam-companion";
 
       const controller = new AbortController();
       healthRequestRef.current = controller;
       // Readiness is diagnostic; the authenticated turn endpoint still validates
       // auth/config. A cold network check must not delay opening the microphone.
-      void fetch(`${supabaseUrl}/functions/v1/sarvam-companion`, {
+      void fetch(`${supabaseUrl}/functions/v1/${voicePath}`, {
         method: "POST",
-        headers: {
-          Authorization: `Bearer ${session.access_token}`,
-          "Content-Type": "application/json",
-        },
+        headers: accessToken
+          ? { Authorization: `Bearer ${accessToken}`, "Content-Type": "application/json" }
+          : { "Content-Type": "application/json" },
         body: JSON.stringify({ action: "health" }),
         signal: controller.signal,
       })
         .then(async (health) => {
-          const payload = (await health.json().catch(() => ({}))) as { ready?: boolean };
-          if (!health.ok || !payload.ready) throw new Error("Voice is not ready.");
+          const payload = (await health.json().catch(() => ({}))) as { ready?: boolean; error?: string };
+          if (!health.ok || !payload.ready) throw new Error(payload.error ?? "Voice is not ready.");
         })
         .catch(() => {
           if (generation !== generationRef.current) return;
           cleanupResources();
           setErrorStage("health");
-          setError("Voice is temporarily unavailable. Please try again.");
+          setError("Voice is not configured yet. Please try again later.");
           setCompanionState("error");
         });
 
@@ -511,7 +522,7 @@ export default function VoiceCompanion({ visible = true }: { visible?: boolean }
       if (generation !== generationRef.current) return;
       startingRef.current = false;
       setCompanionState("listening");
-      startVad(stream, session.access_token);
+      startVad(stream, accessToken);
     } catch {
       if (generation !== generationRef.current) return;
       cleanupResources();
@@ -597,7 +608,7 @@ export default function VoiceCompanion({ visible = true }: { visible?: boolean }
             )}
           </div>
 
-          <p className="vc-privacy">Private chat · saved to your account</p>
+          <p className="vc-privacy">{session ? "Private chat · saved to your account" : "Guest chat · only remembered while this page is open · daily usage limits apply"}</p>
         </section>
       )}
     </div>
