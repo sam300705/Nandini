@@ -28,3 +28,13 @@ npm run build
 - Source repository stays unchanged. No source private data is migrated.
 - Pending: new Supabase provisioning/cost confirmation, RLS & Auth verification, Sarvam secret, independent Vercel deployment verification, supplied photos and personal details.
 - Do not claim real voice end-to-end performance from a build test.
+
+## Private friendship letter
+
+The Home screen includes a **Friendship Letter** card, opening three illustrated notebook pages with swipe, keyboard, and button navigation. All content is stored in the **separate Nandini Supabase project**, not the public GitHub source or the Ishika project.
+
+- Database migration: `20261008171500_friendship_letter_pages.sql`, owner-scoped SELECT RLS. No client mutation policy.
+- The three authored pages have been **staged server-side with `owner_id = NULL`**, so nobody can read them yet, even with an authenticated account.
+- **Activation blocker**: provision Nandini's dedicated Supabase Auth account, verify the intended user, then as a trusted admin set `owner_id` on the three staged rows to that user's UUID. Do not create public read policies or expose the letter as `VITE_*` variables.
+- The Home reader stays behind existing session verification. Until assignment, it shows a private placeholder instead of leaking content.
+- Local verification: `npm ci && npm run lint && npm run test && npm run build`. Deployment and browser-auth flows require separate verification.
