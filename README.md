@@ -36,3 +36,13 @@ npm run build
 ```
 
 The independent repo and all changes are maintained at [sam300705/Nandini](https://github.com/sam300705/Nandini).
+
+## New friendship notebook
+
+The Home card opens a three-page handwritten **friendship note** with swipe, keyboard and button navigation in sky, mint and lavender. It does not alter the existing three navigation tabs or resurrect the gallery.
+
+The note is kept outside the public source: `public.friendship_letter_pages` in **Nandini's own Supabase project** has owner-scoped SELECT RLS with no client write policy. Its three approved pages were staged privately with `owner_id = NULL`; unassigned and anonymous viewers see nothing.
+
+**To activate:** create and verify the intended account in Nandini Supabase Auth, then assign its verified UUID to the three staged rows using trusted administrative access. Never assign the content to an unrelated account, move it into frontend environment variables, or relax RLS.
+
+**Verification:** run `npm ci`, `npm run lint`, `npm run test`, `npm run build`; separately verify an authenticated browser session after ownership assignment and deployment. A green CI build does not establish a working live sign-in flow.
