@@ -35,6 +35,11 @@ describe("Sarvam Bulbul v3 speech delivery", () => {
     expect(request.text.length).toBe(2500);
   });
 
+  it("preserves readable Hindi and line breaks while discarding non-printing controls", () => {
+    const request = buildSarvamTtsRequest("नमस्ते\tदोस्त\nठीक हो?\r\u0007\u001b🙂");
+    expect(request.text).toBe("नमस्ते\tदोस्त\nठीक हो?\r🙂");
+  });
+
   it("keeps the configured speaker and language explicit", () => {
     const request = buildSarvamTtsRequest("नमस्ते", "suhani", "hi-IN");
     expect(request.speaker).toBe("suhani");
