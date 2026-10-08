@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
 import { BIRTHDAY, compliments, friendshipNotes, littleNotes, tags } from "@/lib/nandini-content";
 import MemoryBook from "./MemoryBook";
+import { NotebookPen, ArrowRight } from "lucide-react";
 
 function Countdown() {
   const [now, setNow] = useState<number | null>(null);
@@ -50,7 +51,7 @@ function Countdown() {
   );
 }
 
-export default function HomeTab() {
+export default function HomeTab({ onOpenNote }: { onOpenNote: () => void }) {
   const [compliment, setCompliment] = useState("");
   const [day, setDay] = useState(0);
   useEffect(() => setDay(new Date().getDate()), []);
@@ -74,6 +75,22 @@ export default function HomeTab() {
           ))}
         </div>
       </section>
+
+      <button
+        type="button"
+        onClick={onOpenNote}
+        className="glass-pink group flex w-full items-center gap-3 rounded-2xl border border-border p-4 text-left transition hover:shadow-lg focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-primary"
+        aria-label="Open your friendship note"
+      >
+        <span className="grid h-12 w-12 shrink-0 place-items-center rounded-2xl bg-accent text-primary">
+          <NotebookPen size={25} aria-hidden="true" />
+        </span>
+        <span className="min-w-0 flex-1">
+          <span className="block text-xs font-bold uppercase tracking-wider text-primary">A note from a friend</span>
+          <span className="mt-1 block text-sm text-foreground">From our first year at Dronacharya to friendships that last.</span>
+        </span>
+        <ArrowRight size={19} className="shrink-0 text-primary transition group-hover:translate-x-1" aria-hidden="true" />
+      </button>
 
       <MemoryBook />
       <Countdown />
