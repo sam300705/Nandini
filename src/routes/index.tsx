@@ -88,7 +88,7 @@ function FriendshipApp() {
         </main>
       </div>
 
-      {session && <VoiceCompanion visible={currentTab === "home"} />}
+      <VoiceCompanion visible={currentTab === "home"} />
 
       <nav
         aria-label="Main navigation"
