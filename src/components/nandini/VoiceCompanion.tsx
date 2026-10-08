@@ -258,12 +258,13 @@ export default function VoiceCompanion({ visible = true }: { visible?: boolean }
         const supabaseUrl = import.meta.env["VITE_NANDINI_SUPABASE_URL"] as string | undefined;
         if (!supabaseUrl) throw new Error("Nandini voice configuration is missing.");
         const voicePath = accessToken ? "sarvam-companion" : "guest-sarvam-companion";
-        if (!accessToken) body.append("history", JSON.stringify(guestHistoryRef.current));
+
 
         const body = new FormData();
         body.append("audio", audio, "utterance.webm");
         body.append("recorder_mime_type", recorderMimeType);
         body.append("duration_ms", String(Math.round(durationMs)));
+        if (!accessToken) body.append("history", JSON.stringify(guestHistoryRef.current));
 
         const response = await fetch(`${supabaseUrl}/functions/v1/${voicePath}`, {
           method: "POST",
