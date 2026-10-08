@@ -3,6 +3,7 @@ import { useState } from "react";
 import { BookOpen, Home, LogOut, Sparkles, UsersRound } from "lucide-react";
 import LockScreen from "@/components/nandini/LockScreen";
 import HomeTab from "@/components/nandini/HomeTab";
+import FriendshipNote from "@/components/nandini/FriendshipNote";
 import { AuthProvider } from "@/auth/AuthProvider";
 import { useAuth } from "@/auth/useAuth";
 import DiaryTab from "@/components/nandini/DiaryTab";
@@ -29,7 +30,7 @@ export const Route = createFileRoute("/")({
   component: Index,
 });
 
-type Tab = "home" | "diary" | "together";
+type Tab = "home" | "diary" | "together" | "note";
 const tabs = [
   { id: "home", label: "Home", icon: Home },
   { id: "diary", label: "Diary", icon: BookOpen },
@@ -73,7 +74,8 @@ function PrivateApp() {
         </header>
 
         <main key={tab} className="animate-in fade-in slide-in-from-bottom-2 duration-300">
-          {tab === "home" && <HomeTab />}
+          {tab === "home" && <HomeTab onOpenNote={() => setTab("note")} />}
+          {tab === "note" && <FriendshipNote onBack={() => setTab("home")} />}
           {tab === "diary" && <DiaryTab />}
           {tab === "together" && <TogetherDiaryTab />}
         </main>
