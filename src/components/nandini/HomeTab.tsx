@@ -87,15 +87,18 @@ export default function HomeTab({ onOpenNote }: { onOpenNote: () => void }) {
         aria-label="Friendship photo"
       >
         <div className="relative overflow-hidden bg-accent/40">
-          <img
-            src="/nandini-friendship-photo.jpg"
-            alt="A photo shared for Nandini's friendship corner"
-            width={280}
-            height={189}
-            decoding="async"
-            fetchPriority="low"
-            className="h-auto w-full object-cover"
-          />
+          <picture>
+            <source srcSet="/nandini-friendship-photo-hq.avif" type="image/avif" />
+            <img
+              src="/nandini-friendship-photo.jpg"
+              alt="A photo shared for Nandini's friendship corner"
+              width={1050}
+              height={591}
+              loading="eager"
+              decoding="async"
+              className="mx-auto h-auto max-h-[590px] w-full object-contain"
+            />
+          </picture>
         </div>
         <div className="space-y-1 px-4 py-3">
           <p className="text-xs font-semibold uppercase tracking-wider text-primary">
