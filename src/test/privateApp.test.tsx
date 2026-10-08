@@ -26,7 +26,6 @@ vi.mock("@/integrations/supabase/client", () => ({
 }));
 vi.mock("@/components/nandini/LockScreen", () => ({ default: () => <p>Private sign-in gate</p> }));
 vi.mock("@/components/nandini/HomeTab", () => ({ default: () => <p>Private Home</p> }));
-vi.mock("@/components/nandini/GalleryTab", () => ({ default: () => <p>Private Gallery</p> }));
 vi.mock("@/components/nandini/DiaryTab", () => ({ default: () => <p>Private Diary</p> }));
 vi.mock("@/components/nandini/TogetherDiaryTab", () => ({ default: () => <p>Sambhav and Nandini Diary</p> }));
 const session = {
@@ -48,18 +47,17 @@ it("keeps private content hidden until the session is verified", async () => {
   expect(await screen.findByText("Private sign-in gate")).toBeVisible();
   expect(screen.queryByText("Private Home")).toBeNull();
 });
-it("shows Home, Gallery, Diary and the separate Sambhav-Nandini diary and locks immediately on logout", async () => {
+it("shows Home, Diary and the Sambhav-Nandini friendship diary and locks immediately on logout", async () => {
   render(<Page />);
   await screen.findByText("Private Home");
   const navigation = screen.getByRole("navigation");
-  expect(navigation.querySelectorAll("button")).toHaveLength(4);
+  expect(navigation.querySelectorAll("button")).toHaveLength(3);
   expect(screen.queryByRole("button", { name: "Chat" })).toBeNull();
   expect(screen.queryByRole("button", { name: "Music" })).toBeNull();
-  fireEvent.click(screen.getByRole("button", { name: "Gallery" }));
-  expect(screen.getByText("Private Gallery")).toBeVisible();
+  expect(screen.queryByRole("button", { name: "Gallery" })).toBeNull();
   fireEvent.click(screen.getByRole("button", { name: "Diary" }));
   expect(screen.getByText("Private Diary")).toBeVisible();
-  fireEvent.click(screen.getByRole("button", { name: "Us Diary" }));
+  fireEvent.click(screen.getByRole("button", { name: "Friendship Diary" }));
   expect(screen.getByText("Sambhav and Nandini Diary")).toBeVisible();
   fireEvent.click(screen.getByRole("button", { name: "Lock" }));
   expect(await screen.findByText("Private sign-in gate")).toBeVisible();

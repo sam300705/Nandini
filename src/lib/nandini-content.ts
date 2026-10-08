@@ -7,21 +7,22 @@ export const BIRTHDAY: { month: number; day: number } | null = (() => {
   const sample = new Date(2024, month, day);
   return sample.getMonth() === month && sample.getDate() === day ? { month, day } : null;
 })();
-export const tags = ["Your own little space 💖", "Moments worth keeping ✨", "Just for you 🎀"];
-export const shayaris = [
-  "Chaand bhi sharma jaaye, jab tum muskurao 🌙",
-  "Tum ho toh har din Sunday lagta hai ☀️",
-  "Dil ki baat kya kahein, tum khud ek dua ho 💕",
-  "Sitaaron se zyada chamakti ho tum ✨",
+// Only generic, platonic notes until Nandini shares her own preferences.
+export const tags = ["Good vibes only 😎", "Little wins ✨", "Memories with friends 🤝"];
+export const friendshipNotes = [
+  "Real friends make ordinary days funnier. 😄",
+  "Good company, random jokes, and a lot of memories — that is the vibe. 🌟",
+  "Ek achhi friendship mein bakwaas jokes bhi legendary lagte hain. 😂",
+  "Cheers to the people who make life a little more fun! 🎉",
 ];
 export const littleNotes = [
-  "Some days deserve a little extra sparkle. ✨",
-  "Small moments often make the best memories. 💗",
-  "A little corner of the internet, made just for you. ♡",
+  "New day, new stories. Kya scene hai? 👋",
+  "Take your time and enjoy the small wins today. 🌈",
+  "Some days need good music and a solid laugh. 🎧",
 ];
 export const compliments = [
-  "Your smile deserves its own sunshine ☀️",
-  "Keep being your wonderful self ✨",
-  "Tum ho toh din thoda aur bright lagta hai 💕",
-  "Aaj tumhare naam ek extra smile! 🎀",
+  "You're a genuinely fun person to have around. 🙌",
+  "Great friends deserve great days. 🌟",
+  "Aaj ek extra high-five banta hai! ✋",
+  "Your energy can make an ordinary day better. 😄",
 ];

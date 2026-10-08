@@ -17,11 +17,11 @@ type SarvamTurnResponse = {
 };
 
 const stateCopy: Record<CompanionState, { label: string; hint: string }> = {
-  idle: { label: "Your little companion", hint: "Tap to talk whenever you want ♡" },
+  idle: { label: "Your little companion", hint: "Tap to chat like friends anytime." },
   connecting: { label: "Just a sec…", hint: "Waking up your teddy." },
   listening: { label: "I'm listening…", hint: "English, Hindi, or Hinglish — all okay." },
   thinking: { label: "Hmm…", hint: "Thinking about what you said." },
-  speaking: { label: "Talking to you ♡", hint: "I’ll listen again as soon as I finish." },
+  speaking: { label: "Chatting with you", hint: "I’ll listen again as soon as I finish." },
   error: { label: "Couldn't connect", hint: "Tap Start to try again." },
 };
 
@@ -556,7 +556,7 @@ export default function VoiceCompanion({ visible = true }: { visible?: boolean }
           onClick={() => setExpanded(true)}
         >
           <TeddyFace state={state} stageRef={stageRef} expanded={false} analyserRef={playbackAnalyserRef} />
-          <span>Talk to me ♡</span>
+          <span>Chal baat karein 👋</span>
         </button>
       ) : (
         <section className="vc-panel" aria-label="Nandini's voice companion">
@@ -592,7 +592,7 @@ export default function VoiceCompanion({ visible = true }: { visible?: boolean }
             )}
           </div>
 
-          <p className="vc-privacy">Just us · private memory on</p>
+          <p className="vc-privacy">Private chat · saved to your account</p>
         </section>
       )}
     </div>

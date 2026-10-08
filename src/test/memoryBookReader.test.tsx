@@ -56,7 +56,7 @@ it("loads inline on authenticated Home, with no popup or open step", async () =>
   mocks.session = { user: { id: "owner" } };
   rerender(<MemoryBook />);
   await open();
-  expect(screen.getByRole("region", { name: "Just For You" })).toBeVisible();
+  expect(screen.getByRole("region", { name: "Friendship Notes" })).toBeVisible();
   expect(screen.queryByRole("dialog")).toBeNull();
   expect(mocks.load).toHaveBeenCalledTimes(1);
 });

@@ -1,19 +1,19 @@
 .memory-book {
   padding: 20px 12px 12px;
   overflow: hidden;
-  background: #fff1f6;
-  border: 1px solid #e8a6c480;
+  background: #f3f9ff;
+  border: 1px solid #bbd7f480;
 }
 .memory-intro {
   text-align: center;
   font-size: 12px;
-  color: #7d4760;
+  color: #476987;
   margin: 6px 0 18px;
 }
 .memory-reader:focus-visible,
 .memory-tap:focus-visible,
 .memory-controls button:focus-visible {
-  outline: 2px solid #a8376a;
+  outline: 2px solid #3d73af;
   outline-offset: 3px;
 }
 .memory-reader {
@@ -34,15 +34,15 @@
   height: 100%;
   display: block;
   object-fit: contain;
-  box-shadow: 2px 8px 22px #5e294538;
+  box-shadow: 2px 8px 22px #244f7538;
   border-radius: 3px;
 }
 .memory-paper {
   position: absolute;
   inset: 0;
-  background: #f9edf1;
-  border: 1px solid #e3ced6;
-  box-shadow: 0 8px 28px #5e294533;
+  background: #eff6fb;
+  border: 1px solid #d7e5ef;
+  box-shadow: 0 8px 28px #244f7533;
 }
 .memory-under {
   transform: translate(3px, 3px) rotate(0.5deg);
@@ -61,7 +61,7 @@
   backface-visibility: hidden;
   -webkit-backface-visibility: hidden;
   border-radius: 3px;
-  box-shadow: 6px 2px 18px #5e294526;
+  box-shadow: 6px 2px 18px #244f7526;
 }
 .memory-front img {
   width: 100%;
@@ -74,7 +74,7 @@
   inset: 0;
   background: linear-gradient(
     90deg,
-    #512d4826,
+    #264b7226,
     #fff2 3%,
     transparent 10%,
     transparent 85%,
@@ -84,7 +84,7 @@
 }
 .memory-back {
   transform: rotateY(180deg);
-  background: linear-gradient(90deg, #e6d4dc, #fff6fa 12%, #f5e8ee 90%, #baa0b5);
+  background: linear-gradient(90deg, #d5e4f0, #fcfeff 12%, #eff6fc 90%, #adc6da);
 }
 .memory-tap {
   position: absolute;
@@ -106,7 +106,7 @@
   margin-top: 12px;
   font-size: 12px;
   line-height: 1.5;
-  color: #7d4760;
+  color: #476987;
 }
 .memory-controls {
   display: flex;
@@ -115,13 +115,13 @@
   gap: 26px;
   margin-top: 4px;
   font-size: 12px;
-  color: #7d4760;
+  color: #476987;
 }
 .memory-controls button {
   width: 44px;
   height: 44px;
   border-radius: 12px;
-  background: #ffe0ec;
+  background: #dceefa;
   font-size: 20px;
 }
 .memory-controls button:disabled {

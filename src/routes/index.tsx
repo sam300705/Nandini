@@ -1,11 +1,10 @@
 import { createFileRoute } from "@tanstack/react-router";
 import { useState } from "react";
-import { BookOpen, Heart, Home, Image, LogOut, Sparkles } from "lucide-react";
+import { BookOpen, Home, LogOut, Sparkles, UsersRound } from "lucide-react";
 import LockScreen from "@/components/nandini/LockScreen";
 import HomeTab from "@/components/nandini/HomeTab";
 import { AuthProvider } from "@/auth/AuthProvider";
 import { useAuth } from "@/auth/useAuth";
-import GalleryTab from "@/components/nandini/GalleryTab";
 import DiaryTab from "@/components/nandini/DiaryTab";
 import TogetherDiaryTab from "@/components/nandini/TogetherDiaryTab";
 import VoiceCompanion from "@/components/nandini/VoiceCompanion";
@@ -13,15 +12,15 @@ import VoiceCompanion from "@/components/nandini/VoiceCompanion";
 export const Route = createFileRoute("/")({
   head: () => ({
     meta: [
-      { title: "Hey Nandini ♡ — Your private little universe" },
+      { title: "Hey Nandini! — A little friendship corner" },
       {
         name: "description",
-        content: "Handwritten pages, birthday countdown, gallery and diary — made just for Nandini.",
+        content: "Fun notes, a diary, and friendship memories — made for Nandini by a friend.",
       },
-      { property: "og:title", content: "Hey Nandini ♡ — Your private little universe" },
+      { property: "og:title", content: "Hey Nandini! — A little friendship corner" },
       {
         property: "og:description",
-        content: "Handwritten pages, birthday countdown, gallery and diary — made just for Nandini.",
+        content: "Fun notes, a diary, and friendship memories — made for Nandini by a friend.",
       },
       { property: "og:type", content: "website" },
       { name: "twitter:card", content: "summary_large_image" },
@@ -30,12 +29,11 @@ export const Route = createFileRoute("/")({
   component: Index,
 });
 
-type Tab = "home" | "gallery" | "diary" | "together";
+type Tab = "home" | "diary" | "together";
 const tabs = [
   { id: "home", label: "Home", icon: Home },
-  { id: "gallery", label: "Gallery", icon: Image },
   { id: "diary", label: "Diary", icon: BookOpen },
-  { id: "together", label: "Us Diary", icon: Heart },
+  { id: "together", label: "Friendship Diary", icon: UsersRound },
 ] as const;
 
 function Index() {
@@ -57,8 +55,8 @@ function PrivateApp() {
       <div className="mx-auto max-w-lg px-4 pb-28 pt-4">
         <header className="glass-pink mb-4 flex items-center justify-between rounded-2xl px-4 py-3">
           <div>
-            <h1 className="text-gradient font-script text-3xl font-bold">Hey Nandini ♡</h1>
-            <p className="text-xs text-muted-foreground">Your private little universe</p>
+            <h1 className="text-gradient font-script text-3xl font-bold">Hey Nandini! 👋</h1>
+            <p className="text-xs text-muted-foreground">Your own happy friendship corner</p>
           </div>
           <div className="flex items-center gap-2">
             <span className="flex items-center gap-1 rounded-full bg-accent px-2 py-1 text-[10px] font-semibold tracking-wider text-accent-foreground">
@@ -76,7 +74,6 @@ function PrivateApp() {
 
         <main key={tab} className="animate-in fade-in slide-in-from-bottom-2 duration-300">
           {tab === "home" && <HomeTab />}
-          {tab === "gallery" && <GalleryTab />}
           {tab === "diary" && <DiaryTab />}
           {tab === "together" && <TogetherDiaryTab />}
         </main>

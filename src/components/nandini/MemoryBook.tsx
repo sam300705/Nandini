@@ -139,7 +139,7 @@ function BookPages({ pages }: { pages: LoadedMemoryPage[] }) {
           }}
         />
       </div>
-      <p className="memory-hint">Swipe, tap the edges, or use ← → to turn a page ♡</p>
+      <p className="memory-hint">Swipe, tap the edges, or use ← → to turn a page</p>
       <div className="memory-controls">
         <button
           type="button"
@@ -151,7 +151,7 @@ function BookPages({ pages }: { pages: LoadedMemoryPage[] }) {
         </button>
         <span role="status" aria-live="polite">
           {current.number} / {pages.length}
-          {index === pages.length - 1 ? " ♡" : ""}
+          {index === pages.length - 1 ? " ✨" : ""}
         </span>
         <button
           type="button"
@@ -199,7 +199,7 @@ function PrivateBook() {
   if (error)
     return (
       <div role="alert" className="text-center">
-        <p>Pages load nahi ho paayi. Ek baar phir try karo 💕</p>
+        <p>Pages load nahi ho paayi. Ek baar phir try karo 🙂</p>
         <button className="p-3 rounded-xl border mt-3" onClick={() => setRetry((n) => n + 1)}>
           Try again
         </button>
@@ -208,7 +208,7 @@ function PrivateBook() {
   if (!pages)
     return (
       <p role="status" className="text-center">
-        Tumhare pages khul rahe hain… ♡
+        Tumhare pages khul rahe hain… ✨
       </p>
     );
   return <BookPages pages={pages} />;
@@ -218,9 +218,9 @@ export default function MemoryBook() {
   const { session } = useAuth();
   if (!session) return null;
   return (
-    <section className="memory-book glass-pink rounded-2xl" aria-label="Just For You">
-      <h2 className="text-center font-script text-2xl text-gradient">💌 Just For You</h2>
-      <p className="memory-intro">Kuch baatein jo words se zyada special hain…</p>
+    <section className="memory-book glass-pink rounded-2xl" aria-label="Friendship Notes">
+      <h2 className="text-center font-script text-2xl text-gradient">📝 Friendship Notes</h2>
+      <p className="memory-intro">A few fun notes and memories from a friend.</p>
       <PrivateBook key={session.user.id} />
     </section>
   );

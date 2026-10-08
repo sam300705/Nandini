@@ -47,7 +47,7 @@ export default function LockScreen() {
         className="w-full max-w-sm glass-pink rounded-2xl p-6 space-y-5"
       >
         <h1 className="text-2xl font-bold text-gradient text-center">🚨 RUKO RUKO RUKO 🚨</h1>
-        <p className="text-sm text-muted-foreground">Bas password daalo, VIP! 💕</p>
+        <p className="text-sm text-muted-foreground">Apna private friendship corner unlock karo! 😄</p>
         <label className="block text-sm" htmlFor="password">
           Password
         </label>

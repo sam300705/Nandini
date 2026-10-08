@@ -1,5 +1,5 @@
 import { useEffect, useMemo, useState } from "react";
-import { Heart, Pencil, Save, Search, Trash2, X } from "lucide-react";
+import { Pencil, Save, Search, Trash2, UsersRound, X } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { useAuth } from "@/auth/useAuth";
@@ -15,7 +15,7 @@ type Entry = {
   createdAt: string;
 };
 
-const moods = ["💗", "🥰", "😊", "✨", "🥺", "🤍"];
+const moods = ["🤝", "😂", "😊", "✨", "😎", "🎉"];
 
 const today = () => {
   const d = new Date();
@@ -29,7 +29,7 @@ function toEntry(row: any): Entry {
     id: row.id,
     author: row.author === "sambhav" ? "sambhav" : "nandini",
     entryDate: row.entry_date,
-    mood: row.mood || "💗",
+    mood: row.mood || "🤝",
     text: row.content,
     createdAt: row.created_at,
   };
@@ -47,7 +47,7 @@ export default function TogetherDiaryTab() {
 
   const [author, setAuthor] = useState<Author>("nandini");
   const [entryDate, setEntryDate] = useState(today);
-  const [mood, setMood] = useState("💗");
+  const [mood, setMood] = useState("🤝");
   const [text, setText] = useState("");
   const [editingId, setEditingId] = useState<string | null>(null);
 
@@ -95,7 +95,7 @@ export default function TogetherDiaryTab() {
     setEditingId(null);
     setAuthor("nandini");
     setEntryDate(today());
-    setMood("💗");
+    setMood("🤝");
     setText("");
   };
 
@@ -162,7 +162,7 @@ export default function TogetherDiaryTab() {
           { id, author, entryDate, mood, text: clean, createdAt: now },
           ...current,
         ]);
-        setNotice("Saved in Sambhav & Nandini diary.");
+        setNotice("Saved in your friendship diary.");
         resetComposer();
       }
     }
@@ -172,7 +172,7 @@ export default function TogetherDiaryTab() {
 
   async function remove(entry: Entry) {
     if (!uid || busy) return;
-    if (!window.confirm("Remove this memory from Sambhav & Nandini diary?")) return;
+    if (!window.confirm("Remove this friendship memory?")) return;
 
     setBusy(true);
     const deletedAt = new Date().toISOString();
@@ -196,14 +196,14 @@ export default function TogetherDiaryTab() {
       <section className="glass-pink space-y-4 rounded-3xl p-5 shadow-sm">
         <div className="flex items-start gap-3">
           <div className="grid h-11 w-11 shrink-0 place-items-center rounded-2xl bg-primary/10 text-primary">
-            <Heart size={21} fill="currentColor" />
+            <UsersRound size={21} />
           </div>
           <div>
             <h2 className="text-gradient text-xl font-bold">
-              {editing ? "Edit our memory ✍️" : "Sambhav & Nandini 💞"}
+              {editing ? "Edit this friendship memory ✍️" : "Sambhav & Nandini — Friendship Diary 🤝"}
             </h2>
             <p className="mt-1 text-sm text-muted-foreground">
-              A separate private diary for memories about you both.
+              Funny moments, shared experiences, and the stories of a good friendship.
             </p>
           </div>
         </div>
@@ -370,9 +370,9 @@ export default function TogetherDiaryTab() {
 
       {loaded && entries.length === 0 && (
         <div className="glass-pink rounded-3xl px-6 py-12 text-center">
-          <Heart size={30} className="mx-auto mb-3 text-primary" />
+          <UsersRound size={30} className="mx-auto mb-3 text-primary" />
           <p className="font-medium">Abhi koi shared memory nahi hai.</p>
-          <p className="mt-1 text-sm text-muted-foreground">Pehli memory likho 💗</p>
+          <p className="mt-1 text-sm text-muted-foreground">Pehli friendship memory likho! 😄</p>
         </div>
       )}
 

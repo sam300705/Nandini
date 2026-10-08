@@ -21,3 +21,19 @@ describe("Nandini data isolation", () => {
     expect(diary).toContain("together_diary_entries");
   });
 });
+
+describe("Nandini friendship experience", () => {
+  it("keeps Gallery out of the app navigation", () => {
+    const route = readFileSync("src/routes/index.tsx", "utf-8");
+    expect(route).not.toContain("GalleryTab");
+    expect(route).not.toContain('label: "Gallery"');
+    expect(route).toContain('label: "Friendship Diary"');
+  });
+  it("keeps the app a platonic friendship gift", () => {
+    const home = readFileSync("src/components/nandini/HomeTab.tsx", "utf-8");
+    const diary = readFileSync("src/components/nandini/TogetherDiaryTab.tsx", "utf-8");
+    expect(home).toContain("good friendship vibes");
+    expect(diary).toContain("Friendship Diary");
+    expect(diary).not.toContain("💞");
+  });
+});
