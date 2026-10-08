@@ -3,12 +3,7 @@ import teddyFallback from "@/assets/nandini/teddy3d";
 import { shouldAnimateMouth, shouldScheduleGestures } from "./teddy-animation";
 
 export type TeddyAnimationState =
-  | "idle"
-  | "connecting"
-  | "listening"
-  | "thinking"
-  | "speaking"
-  | "error";
+  "idle" | "connecting" | "listening" | "thinking" | "speaking" | "error";
 
 type Props = {
   state: TeddyAnimationState;
@@ -328,7 +323,11 @@ export default function TeddyScene({ state, analyserRef }: Props) {
             headY = reducedMotion ? 0 : Math.sin((t - speakingStartedAt) * 1.35) * 0.04;
 
             const gestureAge = t - gestureStart;
-            if (shouldScheduleGestures(current, reducedMotion) && gestureAge >= 0 && gestureAge < 1.45) {
+            if (
+              shouldScheduleGestures(current, reducedMotion) &&
+              gestureAge >= 0 &&
+              gestureAge < 1.45
+            ) {
               const phase = Math.sin(Math.min(1, gestureAge / 1.45) * Math.PI);
               if (gestureIndex % 2 === 0) {
                 rightArmBone.rotation.x += phase * 0.48;
@@ -364,13 +363,25 @@ export default function TeddyScene({ state, analyserRef }: Props) {
           mouth.scale.y = damp(mouth.scale.y, 0.12 + jawTarget * 1.6, 14, dt);
 
           const smiling = current === "speaking" ? 1 : 0;
-          mouthCorners[0]!.position.y = damp(mouthCorners[0]!.position.y, -0.31 + smiling * 0.035, 6, dt);
-          mouthCorners[1]!.position.y = damp(mouthCorners[1]!.position.y, -0.31 + smiling * 0.035, 6, dt);
+          mouthCorners[0]!.position.y = damp(
+            mouthCorners[0]!.position.y,
+            -0.31 + smiling * 0.035,
+            6,
+            dt,
+          );
+          mouthCorners[1]!.position.y = damp(
+            mouthCorners[1]!.position.y,
+            -0.31 + smiling * 0.035,
+            6,
+            dt,
+          );
 
           if (!reducedMotion && t > blinkAt) {
-            blinkAt = t + 3.2 + ((Math.sin(t * 2.17) + 1) * 0.5) * 2.8;
+            blinkAt = t + 3.2 + (Math.sin(t * 2.17) + 1) * 0.5 * 2.8;
           }
-          const blinkPhase = reducedMotion ? 0 : Math.max(0, 1 - Math.abs(t - (blinkAt - 0.12)) / 0.12);
+          const blinkPhase = reducedMotion
+            ? 0
+            : Math.max(0, 1 - Math.abs(t - (blinkAt - 0.12)) / 0.12);
           const lidScale = 0.08 + blinkPhase * 0.95;
           eyelids.forEach((lid) => {
             lid.scale.y = lidScale;
@@ -438,7 +449,9 @@ export default function TeddyScene({ state, analyserRef }: Props) {
       {failed ? (
         <img className="vc-teddy-renderer-fallback" src={teddyFallback} alt="" draggable={false} />
       ) : (
-        <span className="vc-teddy-loading" aria-hidden="true">♡</span>
+        <span className="vc-teddy-loading" aria-hidden="true">
+          ♡
+        </span>
       )}
     </div>
   );

@@ -1,10 +1,5 @@
 export type TeddyMotionState =
-  | "idle"
-  | "connecting"
-  | "listening"
-  | "thinking"
-  | "speaking"
-  | "error";
+  "idle" | "connecting" | "listening" | "thinking" | "speaking" | "error";
 
 export function shouldAnimateMouth(state: TeddyMotionState, reducedMotion: boolean) {
   return state === "speaking" && !reducedMotion;

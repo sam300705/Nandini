@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
 import { BIRTHDAY, compliments, friendshipNotes, littleNotes, tags } from "@/lib/nandini-content";
 import MemoryBook from "./MemoryBook";
+import { NotebookPen, ArrowRight } from "lucide-react";
 
 function Countdown() {
   const [now, setNow] = useState<number | null>(null);
@@ -35,7 +36,10 @@ function Countdown() {
       </p>
       <div className="grid grid-cols-4 gap-2">
         {units.map((unit) => (
-          <div key={unit.label} className="rounded-xl border border-border/60 bg-background/50 py-2">
+          <div
+            key={unit.label}
+            className="rounded-xl border border-border/60 bg-background/50 py-2"
+          >
             <p className="text-gradient text-2xl font-bold tabular-nums">
               {String(unit.value).padStart(2, "0")}
             </p>
@@ -50,7 +54,7 @@ function Countdown() {
   );
 }
 
-export default function HomeTab() {
+export default function HomeTab({ onOpenNote }: { onOpenNote: () => void }) {
   const [compliment, setCompliment] = useState("");
   const [day, setDay] = useState(0);
   useEffect(() => setDay(new Date().getDate()), []);
@@ -63,17 +67,72 @@ export default function HomeTab() {
         </p>
         <h2 className="text-gradient text-2xl font-bold">Hey Nandini! 👋</h2>
         <p className="text-sm leading-relaxed text-muted-foreground">
-          Sambhav made this little corner for you — a place for random talks,
-          everyday stories, goofy memories and good friendship vibes. No cheesy stuff. 😄
+          Sambhav made this little corner for you — a place for random talks, everyday stories,
+          goofy memories and good friendship vibes. No cheesy stuff. 😄
         </p>
         <div className="flex flex-wrap gap-1.5">
           {tags.map((tag) => (
-            <span key={tag} className="rounded-full bg-accent px-2.5 py-1 text-xs font-medium text-accent-foreground">
+            <span
+              key={tag}
+              className="rounded-full bg-accent px-2.5 py-1 text-xs font-medium text-accent-foreground"
+            >
               {tag}
             </span>
           ))}
         </div>
       </section>
+
+      <section
+        className="glass-pink overflow-hidden rounded-2xl border border-border shadow-sm"
+        aria-label="Friendship photo"
+      >
+        <div className="relative overflow-hidden bg-accent/40">
+          <picture>
+            <source srcSet="/nandini-friendship-photo-hq.avif" type="image/avif" />
+            <img
+              src="/nandini-friendship-photo.jpg"
+              alt="A photo shared for Nandini's friendship corner"
+              width={1050}
+              height={591}
+              loading="eager"
+              decoding="async"
+              className="mx-auto h-auto max-h-[590px] w-full object-contain"
+            />
+          </picture>
+        </div>
+        <div className="space-y-1 px-4 py-3">
+          <p className="text-xs font-semibold uppercase tracking-wider text-primary">
+            ✨ A little college memory
+          </p>
+          <p className="text-sm text-muted-foreground">
+            Good friends, everyday moments, and memories worth keeping.
+          </p>
+        </div>
+      </section>
+
+      <button
+        type="button"
+        onClick={onOpenNote}
+        className="glass-pink group flex w-full items-center gap-3 rounded-2xl border border-border p-4 text-left transition hover:shadow-lg focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-primary"
+        aria-label="Open your friendship note"
+      >
+        <span className="grid h-12 w-12 shrink-0 place-items-center rounded-2xl bg-accent text-primary">
+          <NotebookPen size={25} aria-hidden="true" />
+        </span>
+        <span className="min-w-0 flex-1">
+          <span className="block text-xs font-bold uppercase tracking-wider text-primary">
+            A note from a friend
+          </span>
+          <span className="mt-1 block text-sm text-foreground">
+            From our first year at Dronacharya to friendships that last.
+          </span>
+        </span>
+        <ArrowRight
+          size={19}
+          className="shrink-0 text-primary transition group-hover:translate-x-1"
+          aria-hidden="true"
+        />
+      </button>
 
       <MemoryBook />
       <Countdown />
@@ -104,7 +163,9 @@ export default function HomeTab() {
           </p>
         )}
         <button
-          onClick={() => setCompliment(compliments[Math.floor(Math.random() * compliments.length)] ?? "")}
+          onClick={() =>
+            setCompliment(compliments[Math.floor(Math.random() * compliments.length)] ?? "")
+          }
           className="gradient-primary rounded-xl px-4 py-2 text-sm font-medium"
         >
           Give me a high-five! 🙌

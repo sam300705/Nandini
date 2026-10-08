@@ -1,7 +1,11 @@
 import "jsr:@supabase/functions-js/edge-runtime.d.ts";
 import { createClient } from "npm:@supabase/supabase-js@2.103.3";
 import { buildSarvamTtsRequest } from "./speech.ts";
-import { isIdentityBoilerplate, isIdentityQuestion, isOverconfidentRelationshipConclusion } from "./conversation.ts";
+import {
+  isIdentityBoilerplate,
+  isIdentityQuestion,
+  isOverconfidentRelationshipConclusion,
+} from "./conversation.ts";
 
 const MAX_AUDIO_BYTES = 8 * 1024 * 1024;
 const MAX_TURN_CHARS = 4000;
@@ -49,7 +53,8 @@ SPEECH STYLE
 function cors(req: Request) {
   const origin = req.headers.get("origin") ?? "";
   const allowed =
-    (Boolean(Deno.env.get("APP_ALLOWED_ORIGIN")) && origin === Deno.env.get("APP_ALLOWED_ORIGIN")) ||
+    (Boolean(Deno.env.get("APP_ALLOWED_ORIGIN")) &&
+      origin === Deno.env.get("APP_ALLOWED_ORIGIN")) ||
     origin === "https://nandini.cc.cd" ||
     origin === "http://localhost:3000" ||
     origin === "http://localhost:5173" ||
@@ -198,7 +203,6 @@ Deno.serve(async (req: Request) => {
   if (!sarvamKey) {
     return json(req, { error: "Sarvam voice is not configured." }, 503);
   }
-
 
   if (!contentType.startsWith("multipart/form-data")) {
     return json(req, { error: "Audio form data required." }, 400);

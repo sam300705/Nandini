@@ -1,8 +1,8 @@
 import { createFileRoute } from "@tanstack/react-router";
 import { useState } from "react";
-import { BookOpen, Home, LogOut, Sparkles, UsersRound } from "lucide-react";
-import LockScreen from "@/components/nandini/LockScreen";
+import { BookOpen, Home, LogOut, NotebookPen, Sparkles, UsersRound } from "lucide-react";
 import HomeTab from "@/components/nandini/HomeTab";
+import FriendshipNote from "@/components/nandini/FriendshipNote";
 import { AuthProvider } from "@/auth/AuthProvider";
 import { useAuth } from "@/auth/useAuth";
 import DiaryTab from "@/components/nandini/DiaryTab";
@@ -29,26 +29,32 @@ export const Route = createFileRoute("/")({
   component: Index,
 });
 
-type Tab = "home" | "diary" | "together";
+type Tab = "home" | "diary" | "together" | "note";
 const tabs = [
   { id: "home", label: "Home", icon: Home },
   { id: "diary", label: "Diary", icon: BookOpen },
   { id: "together", label: "Friendship Diary", icon: UsersRound },
 ] as const;
 
+const guestTabs = [
+  { id: "home", label: "Home", icon: Home },
+  { id: "note", label: "Friendship Note", icon: NotebookPen },
+] as const;
+
 function Index() {
   return (
     <AuthProvider>
-      <PrivateApp />
+      <FriendshipApp />
     </AuthProvider>
   );
 }
 
-function PrivateApp() {
-  const { session, loading, logout } = useAuth();
+function FriendshipApp() {
+  const { session, logout } = useAuth();
   const [tab, setTab] = useState<Tab>("home");
-  if (loading) return <div className="gradient-pink min-h-dvh" />;
-  if (!session) return <LockScreen />;
+  // Do not show protected diary tabs while signed out. Supabase RLS remains in force.
+  const currentTab = !session && (tab === "diary" || tab === "together") ? "home" : tab;
+  const visibleTabs = session ? tabs : guestTabs;
 
   return (
     <div className="gradient-pink min-h-dvh">
@@ -60,34 +66,37 @@ function PrivateApp() {
           </div>
           <div className="flex items-center gap-2">
             <span className="flex items-center gap-1 rounded-full bg-accent px-2 py-1 text-[10px] font-semibold tracking-wider text-accent-foreground">
-              <Sparkles size={11} /> PRIVATE
+              <Sparkles size={11} /> {session ? "PRIVATE" : "FRIENDSHIP"}
             </span>
-            <button
-              aria-label="Lock"
-              onClick={() => void logout()}
-              className="rounded-full p-1.5 text-muted-foreground hover:text-primary"
-            >
-              <LogOut size={16} />
-            </button>
+            {session && (
+              <button
+                aria-label="Lock"
+                onClick={() => void logout()}
+                className="rounded-full p-1.5 text-muted-foreground hover:text-primary"
+              >
+                <LogOut size={16} />
+              </button>
+            )}
           </div>
         </header>
 
-        <main key={tab} className="animate-in fade-in slide-in-from-bottom-2 duration-300">
-          {tab === "home" && <HomeTab />}
-          {tab === "diary" && <DiaryTab />}
-          {tab === "together" && <TogetherDiaryTab />}
+        <main key={currentTab} className="animate-in fade-in slide-in-from-bottom-2 duration-300">
+          {currentTab === "home" && <HomeTab onOpenNote={() => setTab("note")} />}
+          {currentTab === "note" && <FriendshipNote onBack={() => setTab("home")} />}
+          {session && currentTab === "diary" && <DiaryTab />}
+          {session && currentTab === "together" && <TogetherDiaryTab />}
         </main>
       </div>
 
-      <VoiceCompanion visible={tab === "home"} />
+      <VoiceCompanion visible={currentTab === "home"} />
 
       <nav
         aria-label="Main navigation"
         className="glass-pink fixed inset-x-0 bottom-3 z-40 mx-auto flex w-[calc(100%-2rem)] max-w-lg justify-around rounded-2xl p-1.5"
       >
-        {tabs.map((t) => {
+        {visibleTabs.map((t) => {
           const Icon = t.icon;
-          const active = tab === t.id;
+          const active = currentTab === t.id;
           return (
             <button
               key={t.id}

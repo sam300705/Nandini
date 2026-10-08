@@ -15,6 +15,14 @@ type Entry = {
   createdAt: string;
 };
 
+type TogetherDiaryRow = {
+  id: string;
+  author: string;
+  entry_date: string;
+  mood: string;
+  content: string;
+  created_at: string;
+};
 const moods = ["🤝", "😂", "😊", "✨", "😎", "🎉"];
 
 const today = () => {
@@ -24,7 +32,7 @@ const today = () => {
   ).padStart(2, "0")}`;
 };
 
-function toEntry(row: any): Entry {
+function toEntry(row: TogetherDiaryRow): Entry {
   return {
     id: row.id,
     author: row.author === "sambhav" ? "sambhav" : "nandini",
@@ -135,9 +143,7 @@ export default function TogetherDiaryTab() {
       else {
         setEntries((current) =>
           current.map((entry) =>
-            entry.id === editingId
-              ? { ...entry, author, entryDate, mood, text: clean }
-              : entry,
+            entry.id === editingId ? { ...entry, author, entryDate, mood, text: clean } : entry,
           ),
         );
         setNotice("Memory updated.");
@@ -200,7 +206,9 @@ export default function TogetherDiaryTab() {
           </div>
           <div>
             <h2 className="text-gradient text-xl font-bold">
-              {editing ? "Edit this friendship memory ✍️" : "Sambhav & Nandini — Friendship Diary 🤝"}
+              {editing
+                ? "Edit this friendship memory ✍️"
+                : "Sambhav & Nandini — Friendship Diary 🤝"}
             </h2>
             <p className="mt-1 text-sm text-muted-foreground">
               Funny moments, shared experiences, and the stories of a good friendship.
@@ -289,7 +297,11 @@ export default function TogetherDiaryTab() {
           {error}
         </p>
       )}
-      {notice && <p role="status" className="text-sm text-muted-foreground">{notice}</p>}
+      {notice && (
+        <p role="status" className="text-sm text-muted-foreground">
+          {notice}
+        </p>
+      )}
 
       <section className="glass-pink space-y-3 rounded-2xl p-4">
         <div className="relative">
