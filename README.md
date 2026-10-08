@@ -17,6 +17,15 @@ The old password entry screen is **not rendered**. The missing login-email confi
 - The previously staged `friendship_letter_pages` table remains private, with three unassigned rows. Its contents and private storage objects are not exposed by this change.
 - Gallery remains removed. Ishika data, Supabase project, and Vercel deployment are entirely separate.
 
+## Personal photo and talking teddy
+
+- The user-provided photo is shown as an **upright, optimized** homepage memory at `/nandini-friendship-photo.jpg`. This one image is public because the Home page is password-free. The Gallery remains removed.
+- The floating 3D teddy UI from the Ishika experience is now visible to guest visitors, but uses **Nandini's own** Sarvam-only backend, not Ishika's project, data, or credentials.
+- Signed-in sessions use `sarvam-companion` and existing owner-scoped conversation memory. Public guest sessions use the independent `guest-sarvam-companion` function with a global cap of 24 turns/day, at most 4 turns/IP/day and 30-second cooldown. Quota is transactional and inaccessible to client roles.
+- Guest dialogue context lasts only in browser memory during the current page session; no guest audio/transcripts are stored server-side.
+- **Operational blocker:** Nandini's independent Supabase project must have its own `SARVAM_API_KEY` secret configured. If it is absent, the guest function responds HTTP 503 and the teddy shows voice unavailable instead of exposing a key or silently falling back to another provider.
+- The public guest endpoint sets `verify_jwt=false` intentionally; it implements its own origin and backend quota checks. Do not disable its quota checks or share Ishika secrets.
+
 ## Development and verification
 
 ```sh
