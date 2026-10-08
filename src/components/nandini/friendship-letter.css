@@ -1,0 +1,42 @@
+@import url("https://fonts.googleapis.com/css2?family=Caveat:wght@500;600;700&display=swap");
+
+.friendship-letter { padding-bottom: 2rem; color: #3e3049; }
+.friendship-back { display: inline-flex; align-items: center; gap: .4rem; padding: .45rem .75rem; border-radius: 999px; background: #fff9fd; border: 1px solid #f4d3e7; font-size: .83rem; font-weight: 600; color: #a03574; margin-bottom: 1rem; }
+.friendship-back:focus-visible, .friendship-pagination button:focus-visible, .friendship-message button:focus-visible, .friendship-paper:focus-visible { outline: 3px solid #a74180; outline-offset: 3px; }
+.friendship-intro { text-align: center; margin: .25rem auto 1.3rem; }
+.friendship-seal { height: 48px; width: 48px; display: grid; place-items: center; color: #a72f75; background: #ffe0f0; border: 1px solid #f7c6dc; border-radius: 50%; margin: 0 auto .6rem; box-shadow: 0 4px 16px #ce8cab26; }
+.friendship-eyebrow { font-size: .67rem; letter-spacing: .16em; text-transform: uppercase; color: #9e5385; font-weight: 700; }
+.friendship-intro h2 { font-family: "Dancing Script", cursive; font-size: 2.25rem; font-weight: 700; color: #9f326d; display: flex; justify-content: center; align-items: center; gap: .35rem; margin: .15rem 0; }
+.friendship-intro p:last-child { font-size: .8rem; color: #78657d; }
+.friendship-book-shell { position: relative; padding: 7px 5px 9px 0; }
+.friendship-book-shell::before { content: ""; position: absolute; inset: 14px 0 0 8px; border-radius: 15px 22px 18px 14px; background: #ead9d6; transform: rotate(1.2deg); box-shadow: 0 14px 28px #4225361a; }
+.friendship-paper { position: relative; min-height: 690px; padding: 33px 21px 58px 46px; border-radius: 11px 17px 15px 10px; overflow: hidden; isolation: isolate; background-color: #fffdf9; background-image: repeating-linear-gradient(to bottom, transparent 0 39px, #d7e1f1 39px 40px); box-shadow: 1px 7px 23px #36212f1b; animation: friendshipPageIn .25s ease-out; }
+.friendship-paper::before { content: ""; position: absolute; top: 0; bottom: 0; left: 29px; width: 2px; background: #efabc6; box-shadow: 4px 0 #ffd4e7; z-index: -1; }
+.friendship-page-decor { position: absolute; top: 16px; right: 21px; color: #e976a9; letter-spacing: .15rem; font-size: 1.1rem; }
+.friendship-ribbon { display: table; font-family: "Dancing Script", cursive; background: linear-gradient(100deg, #ff9bd3, #ffbce2, #f59dd3); color: #252350; padding: 2px 17px 4px; transform: rotate(-2deg); font-size: 2.05rem; font-weight: 700; margin: 22px auto 14px; box-shadow: 0 3px 0 #e77aa029; }
+.friendship-page-caption { text-align: right; color: #685779; font: 600 11px/1.5 "Outfit", sans-serif; letter-spacing: .03em; margin: 6px 0 22px; }
+.friendship-paper h3 { font-family: "Caveat", "Dancing Script", cursive; font-size: clamp(28px, 7vw, 35px); line-height: 1.12; text-align: center; font-weight: 700; color: #232b62; margin: 6px 0 29px; }
+.friendship-writing { font-family: "Caveat", "Dancing Script", cursive; font-size: clamp(25px, 6.5vw, 29px); font-weight: 600; line-height: 40px; letter-spacing: .005em; color: #243361; }
+.friendship-writing p { margin: 0 0 21px; overflow-wrap: anywhere; }
+.friendship-highlight { border-radius: .4rem; padding: 0 .15rem; box-decoration-break: clone; -webkit-box-decoration-break: clone; }
+.friendship-highlight-pink { background: #ffafe0bb; }
+.friendship-highlight-blue { background: #a9e5f9be; }
+.friendship-highlight-mint { background: #aff2c5be; }
+.friendship-highlight-yellow { background: #ffe5a0db; }
+.friendship-signature { font-family: "Caveat", cursive; color: #90366e; text-align: right; font-size: 29px; font-weight: 700; margin-top: 1.6rem; }
+.friendship-page-number { position: absolute; right: 19px; bottom: 12px; font: 700 28px/1 "Caveat", cursive; color: #313965; }
+.friendship-hint { color: #8b6286; font-size: .7rem; text-align: center; margin: 11px 0 12px; }
+.friendship-pagination { display: flex; align-items: center; justify-content: space-between; gap: 5px; }
+.friendship-pagination button { display: inline-flex; justify-content: center; align-items: center; gap: 2px; min-height: 40px; padding: 0 10px; font-size: .77rem; font-weight: 700; background: #ffeff7; color: #953879; border: 1px solid #f1cadd; border-radius: 12px; }
+.friendship-pagination button:disabled { opacity: .35; cursor: not-allowed; }
+.friendship-pagination span { white-space: nowrap; font-size: .8rem; font-weight: 600; color: #7d5b79; }
+.friendship-ending { display: flex; align-items: center; justify-content: center; flex-wrap: wrap; gap: 8px; font: 700 1.5rem/1.3 "Caveat", cursive; color: #983b7c; text-align: center; margin: 20px auto 0; }
+.friendship-message { min-height: 330px; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 13px; padding: 28px; text-align: center; font-size: 1rem; color: #7c5172; border: 1px dashed #edbfd9; border-radius: 18px; background: #fffbfd; }
+.friendship-message button { border-radius: 13px; background: #f9d9ed; padding: 9px 16px; font-size: .85rem; font-weight: 700; }
+@keyframes friendshipPageIn { from { opacity: .6; transform: translateX(8px) rotateY(-3deg); } to { opacity: 1; transform: none; } }
+@media (max-width: 370px) {
+  .friendship-paper { padding-right: 14px; padding-left: 41px; }
+  .friendship-page-decor { right: 10px; }
+  .friendship-paper h3 { font-size: 28px; }
+}
+@media (prefers-reduced-motion: reduce) { .friendship-paper { animation: none; } }
